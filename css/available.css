@@ -1,0 +1,781 @@
+/* =========================================================
+   AVAILABLE SCHOLARSHIPS
+   MIT SCHOLARSHIP PORTAL
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   ROOT COLORS
+   ========================================================= */
+
+:root {
+    --burgundy: #64111B;
+    --burgundy-dark: #4A0C13;
+    --burgundy-light: #7F1D2D;
+
+    --pink: #C91545;
+    --pink-light: #F5D0D9;
+    --pink-soft: #F9E7EB;
+
+    --background: #F8F1F3;
+    --card: #FFFFFF;
+
+    --border: #DFC1C8;
+
+    --text: #351015;
+    --text-dark: #260B0F;
+    --muted: #705960;
+    --muted-light: #927A81;
+}
+
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+body {
+    font-family: "DM Sans", sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   NAVBAR
+   Same dimensions / colors as HOME
+   ========================================================= */
+
+.navbar {
+    height: 76px;
+    background: var(--burgundy);
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 48px;
+
+    color: white;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 100;
+
+    box-shadow: 0 3px 12px rgba(127, 29, 29, 0.12);
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.nav-left {
+    flex: 1;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-mark {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 7px;
+
+    background: white;
+    color: var(--burgundy);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-text strong {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.logo-text span {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 11px;
+    color: #F9C9D5;
+}
+
+
+/* =========================================================
+   NAV LINKS
+   ========================================================= */
+
+.nav-links {
+    display: flex;
+    align-items: center;
+
+    gap: 32px;
+
+    margin-left: auto;
+    margin-right: 34px;
+}
+
+.nav-links a {
+    color: #F8DDE3;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    padding: 29px 0;
+
+    border-bottom: 2px solid transparent;
+
+    transition: 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+.nav-links a.active {
+    color: white;
+    border-bottom-color: var(--pink);
+}
+
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+.profile-menu {
+    position: relative;
+}
+
+.profile-button {
+    border: none;
+    background: transparent;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.profile-avatar {
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    background: white;
+    color: var(--burgundy);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+}
+
+.profile-arrow {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   PROFILE DROPDOWN
+   ========================================================= */
+
+.profile-dropdown {
+    position: absolute;
+
+    top: 48px;
+    right: 0;
+
+    width: 175px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    box-shadow: 0 10px 25px rgba(127, 29, 29, 0.15);
+
+    display: none;
+
+    overflow: hidden;
+}
+
+.profile-dropdown.show {
+    display: block;
+}
+
+.profile-dropdown a {
+    display: block;
+
+    padding: 12px 15px;
+
+    color: var(--text);
+
+    text-decoration: none;
+
+    font-size: 13px;
+}
+
+.profile-dropdown a:hover {
+    background: var(--pink-soft);
+    color: var(--burgundy);
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   EXACT SAME WIDTH AS HOME
+   ========================================================= */
+
+.container {
+    width: min(1180px, calc(100% - 48px));
+
+    margin: auto;
+
+    padding: 45px 0 55px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+
+    
+.page-label {
+     display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--pink);
+    margin-bottom: 7px;
+
+}
+
+
+.page-header h1 {
+    margin-top: 7px;
+    color: var(--burgundy);
+    font-size: 31px;
+}
+
+.page-header p {
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   CATEGORY FILTER
+   ========================================================= */
+
+.filter-section {
+    display: flex;
+
+    gap: 6px;
+
+    margin-bottom: 38px;
+}
+
+.filter-button {
+    height: 40px;
+
+    padding: 0 20px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    color: var(--muted);
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.filter-button:hover {
+    background: var(--pink-soft);
+    color: var(--burgundy);
+}
+
+.filter-button.active {
+    background: var(--burgundy);
+
+    border-color: var(--burgundy);
+
+    color: white;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   SCHOLARSHIP LIST
+========================================================= */
+
+.scholarship-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* =========================================================
+   SCHOLARSHIP CARD
+========================================================= */
+
+.scholarship-card {
+    display: flex;
+    align-items: center;
+
+    gap: 19px;
+
+    padding: 20px 22px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    box-shadow: 0 2px 6px rgba(127, 29, 29, 0.035);
+
+    transition: 0.2s ease;
+}
+
+.scholarship-card:hover {
+    border-color: #E6A8B7;
+
+    box-shadow: 0 5px 15px rgba(127, 29, 29, 0.07);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.scholarship-number {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    border-radius: 6px;
+
+    background: var(--burgundy);
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   MAIN SCHOLARSHIP CONTENT
+========================================================= */
+
+.scholarship-info {
+    flex: 1;
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 8px;
+}
+
+
+/* =========================================================
+   SCHOLARSHIP NAME
+========================================================= */
+
+.scholarship-name {
+    color: var(--burgundy);
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   VALUE + DEADLINE + CATEGORY
+========================================================= */
+
+.scholarship-meta {
+    display: flex;
+    align-items: center;
+
+    gap: 24px;
+
+    flex-wrap: wrap;
+}
+
+
+/* SCHOLARSHIP VALUE */
+
+.scholarship-value {
+    color: var(--pink);
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* DEADLINE */
+
+.scholarship-deadline {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    white-space: nowrap;
+}
+
+
+/* CATEGORY */
+
+.category-tag {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    white-space: nowrap;
+
+    text-transform: lowercase;
+}
+
+
+/* =========================================================
+   OFFICIAL PORTAL BUTTON
+========================================================= */
+
+.portal-button {
+    flex-shrink: 0;
+
+    padding: 9px 13px;
+
+    background: white;
+
+    border: 1px solid #E1BBC5;
+
+    border-radius: 5px;
+
+    color: var(--burgundy);
+
+    text-decoration: none;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition: 0.2s ease;
+}
+
+.portal-button:hover {
+    background: var(--pink);
+
+    color: white;
+
+    border-color: var(--pink);
+}
+
+/* =========================================================
+   INFORMATION NOTICE
+   ========================================================= */
+
+.information-notice {
+    margin-top: 25px;
+
+    background: var(--pink-soft);
+
+    border: 1px solid #F4CDD8;
+
+    border-radius: 7px;
+
+    padding: 15px 17px;
+
+    display: flex;
+
+    gap: 12px;
+}
+
+.notice-symbol {
+    width: 23px;
+    height: 23px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--pink);
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.information-notice h3 {
+    color: var(--burgundy);
+
+    font-size: 12px;
+}
+
+.information-notice p {
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+    border-top: 1px solid var(--border);
+
+    text-align: center;
+
+    padding: 22px;
+
+    color: var(--muted-light);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .navbar {
+        padding: 0 25px;
+    }
+
+    .nav-links {
+        gap: 18px;
+
+        margin-right: 20px;
+    }
+
+    .nav-links a {
+        font-size: 11px;
+    }
+
+    .scholarship-info {
+        gap: 12px;
+    }
+
+    .scholarship-name {
+        font-size: 13px;
+    }
+}
+
+
+@media (max-width: 760px) {
+
+    .navbar {
+        height: auto;
+
+        padding: 15px 20px;
+
+        flex-wrap: wrap;
+
+        gap: 14px;
+    }
+
+    .nav-links {
+        order: 3;
+
+        width: 100%;
+
+        overflow-x: auto;
+
+        margin: 0;
+    }
+
+    .nav-links a {
+        padding: 7px 0;
+
+        white-space: nowrap;
+    }
+
+    .container {
+        width: calc(100% - 30px);
+
+        padding-top: 30px;
+    }
+
+    .scholarship-card {
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+    }
+
+    .scholarship-info {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 6px;
+
+        flex: 1;
+    }
+
+    .official-link {
+        margin-left: 69px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .page-header h1 {
+        font-size: 26px;
+    }
+
+    .profile-button span {
+        display: none;
+    }
+
+    .filter-section {
+        flex-wrap: wrap;
+    }
+
+    .scholarship-card {
+        padding: 17px;
+    }
+
+    .scholarship-info {
+        width: calc(100% - 69px);
+    }
+
+    .official-link {
+        width: calc(100% - 69px);
+
+        margin-left: 69px;
+    }
+}
+/* =========================================================
+   SECTION HEADING
+   Matches Search Scholarships page
+========================================================= */
+
+.section-heading {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 26px;
+}
+
+.section-heading > div {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.section-number {
+    color: var(--pink);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    line-height: 1.4;
+
+    padding-top: 3px;
+}
+
+.section-heading h2 {
+    margin: 0;
+
+    color: var(--burgundy);
+
+    font-size: 25px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+.section-heading p {
+    margin: 7px 0 0;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}

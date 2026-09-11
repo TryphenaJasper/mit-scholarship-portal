@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Profile | MIT Scholarships</title>
+
+    <link rel="stylesheet" href="css/profile.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,500&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+    <nav class="navbar">
+
+    <div class="logo">
+        <div class="logo-mark">M</div>
+
+        <div>
+            <strong>MIT Scholarships</strong>
+            <span>Anna University</span>
+        </div>
+    </div>
+
+    <div class="nav-links">
+        <a href="home.html">Home</a>
+        <a href="search.html">Search Scholarships</a>
+        <a href="available.html">Available Scholarships</a>
+        <a href="help.html">Help</a>
+    </div>
+
+    <a href="profile.html" class="profile-button">
+        My Profile
+    </a>
+
+</nav>
+
+<div class="profile-page">
+
+    <div class="profile-container">
+
+        <div class="profile-header">
+            <h1>Tell us about yourself</h1>
+
+            <p>
+                These details are checked against every scholarship MIT students
+                can currently apply for. Nothing here is submitted anywhere —
+                it only runs the eligibility check on this device.
+            </p>
+        </div>
+
+
+        <form id="profileForm">
+
+            <section class="form-section">
+
+                <h2>Identity</h2>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="registerNumber">
+                            Register number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="registerNumber"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="form-group full-width">
+                    <label for="fullName">
+                        Full name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        required
+                    >
+                </div>
+
+            </section>
+
+
+            <section class="form-section">
+
+                <h2>Academics</h2>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="branch">
+                            Branch / department
+                        </label>
+
+                        <select id="branch" required>
+                            <option value="">Select</option>
+                            <option value="CSE">Computer Science and Engineering</option>
+                            <option value="IT">Information Technology</option>
+                            <option value="ECE">Electronics and Communication Engineering</option>
+                            <option value="EEE">Electrical and Electronics Engineering</option>
+                            <option value="MECH">Mechanical Engineering</option>
+                            <option value="AERO">Aeronautical Engineering</option>
+                            <option value="E&I">Electronics and Instrumentation Engineering</option>
+                            <option value="AUTO">Automobile Engineering</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="year">
+                            Year of study
+                        </label>
+
+                        <select id="year" required>
+                            <option value="">Select</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="semester">
+                            Current semester
+                        </label>
+
+                        <input
+                            type="number"
+                            id="semester"
+                            min="1"
+                            max="8"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="hsc">
+                            HSC (12th) percentage
+                        </label>
+
+                        <input
+                            type="number"
+                            id="hsc"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="cgpa">
+                            Current CGPA
+                        </label>
+
+                        <input
+                            type="number"
+                            id="cgpa"
+                            min="0"
+                            max="10"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="attendance">
+                            Attendance percentage
+                        </label>
+
+                        <input
+                            type="number"
+                            id="attendance"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="radio-group">
+
+                    <label>
+                        Do you have any standing arrears?
+                    </label>
+
+                    <div class="radio-options">
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="arrears"
+                                value="yes"
+                                required
+                            >
+                            Yes
+                        </label>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="arrears"
+                                value="no"
+                            >
+                            No
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="form-section">
+
+                <h2>Family &amp; community</h2>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="gender">
+                            Gender
+                        </label>
+
+                        <select id="gender" required>
+                            <option value="">Select</option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="category">
+                            Category
+                        </label>
+
+                        <select id="category" required>
+                            <option value="">Select</option>
+                            <option value="BC">BC</option>
+                            <option value="MBC">MBC</option>
+                            <option value="SC">SC</option>
+                            <option value="ST">ST</option>
+                            <option value="SCC">SCC</option>
+                            <option value="OC">OC</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="community">
+                            Religion / community
+                        </label>
+
+                        <select id="community" required>
+                            <option value="">Select</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Christian">Christian</option>
+                            <option value="Muslim">Muslim</option>
+                            <option value="Buddhist">Buddhist</option>
+                            <option value="Jain">Jain</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="income">
+                            Parental annual income (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="income"
+                            min="0"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="radio-grid">
+
+                    <div class="radio-group">
+
+                        <label>
+                            First graduate in your family?
+                        </label>
+
+                        <div class="radio-options">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="firstGraduate"
+                                    value="yes"
+                                    required
+                                >
+                                Yes
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="firstGraduate"
+                                    value="no"
+                                >
+                                No
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="radio-group">
+
+                        <label>
+                            Studied 10th–12th in a Government /
+                            Govt-aided school?
+                        </label>
+
+                        <div class="radio-options">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="governmentSchool"
+                                    value="yes"
+                                    required
+                                >
+                                Yes
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="governmentSchool"
+                                    value="no"
+                                >
+                                No
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="form-section">
+
+                <h2>Status</h2>
+
+                <div class="radio-grid">
+
+                    <div class="radio-group">
+
+                        <label>
+                            Differently abled?
+                        </label>
+
+                        <div class="radio-options">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="differentlyAbled"
+                                    value="yes"
+                                    required
+                                >
+                                Yes
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="differentlyAbled"
+                                    value="no"
+                                >
+                                No
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="radio-group">
+
+                        <label>
+                            Admitted through single window counselling?
+                        </label>
+
+                        <div class="radio-options">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="singleWindow"
+                                    value="yes"
+                                    required
+                                >
+                                Yes
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="singleWindow"
+                                    value="no"
+                                >
+                                No
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="radio-group">
+
+                        <label>
+                            Are you already availing another scholarship?
+                        </label>
+
+                        <div class="radio-options">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="otherScholarship"
+                                    value="yes"
+                                    required
+                                >
+                                Yes
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="otherScholarship"
+                                    value="no"
+                                >
+                                No
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <button type="submit" class="create-button">
+                Create Profile
+            </button>
+
+        </form>
+
+
+        <div id="successMessage" class="success-message">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h2>Profile created successfully!</h2>
+
+            <p id="successText"></p>
+
+            <button
+                type="button"
+                class="dashboard-button"
+                onclick="goToDashboard()"
+            >
+                Go to Dashboard
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/profile.js"></script>
+
+</body>
+</html>
