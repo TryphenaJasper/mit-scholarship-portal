@@ -61,5 +61,5 @@ profileForm.addEventListener("submit", function(event) {
 });
 
 function goToDashboard() {
-    window.location.href = "home.html";
+    window.location.href = "index.html";
 }
