@@ -1,38 +1,36 @@
 
 package com.mit.scholarship.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class Scholarship {
 
-    private String scholarshipId;
+    private Long scholarshipId;
     private String name;
-    private double minimumCgpa;
-    private double maximumFamilyIncome;
-    private String department;
-    private int minimumYear;
-    private int maximumYear;
+    private String category;
+    private String provider;
+    private String description;
+    private BigDecimal amount;
+    private String currency;
+    private String amountPeriod;
+    private String benefitType;
+    private String degreeType;
+    private String applicationType;
+    private LocalDate deadline;
+    private String officialUrl;
+    private String status;
+    private LocalDateTime lastVerifiedAt;
 
     public Scholarship() {
     }
 
-    public Scholarship(String scholarshipId, String name,
-                       double minimumCgpa,
-                       double maximumFamilyIncome,
-                       String department,
-                       int minimumYear, int maximumYear) {
-        this.scholarshipId = scholarshipId;
-        this.name = name;
-        this.minimumCgpa = minimumCgpa;
-        this.maximumFamilyIncome = maximumFamilyIncome;
-        this.department = department;
-        this.minimumYear = minimumYear;
-        this.maximumYear = maximumYear;
-    }
-
-    public String getScholarshipId() {
+    public Long getScholarshipId() {
         return scholarshipId;
     }
 
-    public void setScholarshipId(String scholarshipId) {
+    public void setScholarshipId(Long scholarshipId) {
         this.scholarshipId = scholarshipId;
     }
 
@@ -44,44 +42,107 @@ public class Scholarship {
         this.name = name;
     }
 
-    public double getMinimumCgpa() {
-        return minimumCgpa;
+    public String getCategory() {
+        return category;
     }
 
-    public void setMinimumCgpa(double minimumCgpa) {
-        this.minimumCgpa = minimumCgpa;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public double getMaximumFamilyIncome() {
-        return maximumFamilyIncome;
+    public String getProvider() {
+        return provider;
     }
 
-    public void setMaximumFamilyIncome(double maximumFamilyIncome) {
-        this.maximumFamilyIncome = maximumFamilyIncome;
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public int getMinimumYear() {
-        return minimumYear;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setMinimumYear(int minimumYear) {
-        this.minimumYear = minimumYear;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
-    public int getMaximumYear() {
-        return maximumYear;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setMaximumYear(int maximumYear) {
-        this.maximumYear = maximumYear;
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getAmountPeriod() {
+        return amountPeriod;
+    }
+
+    public void setAmountPeriod(String amountPeriod) {
+        this.amountPeriod = amountPeriod;
+    }
+
+    public String getBenefitType() {
+        return benefitType;
+    }
+
+    public void setBenefitType(String benefitType) {
+        this.benefitType = benefitType;
+    }
+
+    public String getDegreeType() {
+        return degreeType;
+    }
+
+    public void setDegreeType(String degreeType) {
+        this.degreeType = degreeType;
+    }
+
+    public String getApplicationType() {
+        return applicationType;
+    }
+
+    public void setApplicationType(String applicationType) {
+        this.applicationType = applicationType;
+    }
+
+    public LocalDate getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDate deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getOfficialUrl() {
+        return officialUrl;
+    }
+
+    public void setOfficialUrl(String officialUrl) {
+        this.officialUrl = officialUrl;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getLastVerifiedAt() {
+        return lastVerifiedAt;
+    }
+
+    public void setLastVerifiedAt(LocalDateTime lastVerifiedAt) {
+        this.lastVerifiedAt = lastVerifiedAt;
     }
 }
-
