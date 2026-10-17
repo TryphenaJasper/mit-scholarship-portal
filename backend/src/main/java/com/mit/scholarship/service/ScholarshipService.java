@@ -21,5 +21,8 @@ public class ScholarshipService {
     public List<Scholarship> getAllScholarships() {
         return scholarshipRepository.findAll();
     }
+    public Scholarship getScholarshipById(Long id) {
+        return scholarshipRepository.findById(id);
+    }
 }
 

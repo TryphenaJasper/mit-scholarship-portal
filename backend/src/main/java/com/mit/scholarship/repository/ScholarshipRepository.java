@@ -31,7 +31,25 @@ public class ScholarshipRepository {
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapRow(rs));
     }
+    public Scholarship findById(Long id) {
 
+    String sql = """
+        SELECT scholarship_id, name, category, provider,
+               description, amount, currency, amount_period,
+               benefit_type, degree_type, application_type,
+               deadline, official_url, status, last_verified_at
+        FROM scholarships
+        WHERE scholarship_id = ?
+        """;
+
+    List<Scholarship> results = jdbcTemplate.query(
+        sql,
+        (rs, rowNum) -> mapRow(rs),
+        id
+    );
+
+    return results.isEmpty() ? null : results.get(0);
+}
     private Scholarship mapRow(ResultSet rs) throws SQLException {
 
         Scholarship scholarship = new Scholarship();
