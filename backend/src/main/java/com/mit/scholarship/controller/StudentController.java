@@ -3,6 +3,7 @@ package com.mit.scholarship.controller;
 
 import com.mit.scholarship.dto.StudentRegistrationRequest;
 import com.mit.scholarship.service.StudentService;
+import com.mit.scholarship.dto.StudentProfilePatchRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import com.mit.scholarship.dto.StudentProfileResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
@@ -51,5 +56,31 @@ public class StudentController {
 
         return ResponseEntity.ok(profile);
     }
+    @PatchMapping("/{id}")
+public ResponseEntity<?> patchStudentProfile(
+        @PathVariable Long id,
+        @RequestBody StudentProfilePatchRequest request) {
+
+    try {
+        studentService.patchStudentProfile(id, request);
+
+        return ResponseEntity.ok(
+                java.util.Map.of(
+                        "message", "Student profile updated successfully",
+                        "studentId", id
+                )
+        );
+
+    } catch (IllegalArgumentException e) {
+        if (e.getMessage() != null
+                && e.getMessage().startsWith("Student not found")) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.badRequest().body(
+                java.util.Map.of("error", e.getMessage())
+        );
+    }
+}
 }
 

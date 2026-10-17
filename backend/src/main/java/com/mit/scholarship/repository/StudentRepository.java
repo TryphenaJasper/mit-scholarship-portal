@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -380,5 +381,479 @@ public class StudentRepository {
         boolean value = rs.getBoolean(column);
         return rs.wasNull() ? null : value;
     }
+    
+    public void updateStudentFields(Long studentId, JsonNode student) {
+
+        if (student == null || !student.isObject()) {
+        throw new IllegalArgumentException(
+                "Student details must be a JSON object.");
+        }
+
+        String[] allowedFields = {
+        "registerNo",
+        "name",
+        "email",
+        "gender",
+        "dateOfBirth",
+        "department",
+        "degree",
+        "yearOfStudy",
+        "semester"
+        };
+
+        StringBuilder sql = new StringBuilder(
+            "UPDATE students SET ");
+        java.util.List<Object> values = new java.util.ArrayList<>();
+
+        for (String field : allowedFields) {
+            if (student.has(field)) {
+                if (student.get(field).isNull()) {
+                    throw new IllegalArgumentException(
+                        field + " cannot be null.");
+                }
+
+            String column;
+
+            switch (field) {
+                case "registerNo":
+                    column = "register_no";
+                    break;
+                case "dateOfBirth":
+                    column = "date_of_birth";
+                    break;
+                case "yearOfStudy":
+                    column = "year_of_study";
+                    break;
+                default:
+                    column = field.replaceAll(
+                            "([a-z])([A-Z])", "$1_$2"
+                    ).toLowerCase();
+            }
+
+            if (!values.isEmpty()) {
+                sql.append(", ");
+            }
+
+            sql.append(column).append(" = ?");
+            values.add(student.get(field).asText());
+            }
+        }
+
+        if (values.isEmpty()) {
+            throw new IllegalArgumentException(
+                "No editable student fields were provided.");
+        }
+
+        sql.append(" WHERE student_id = ?");
+        values.add(studentId);
+
+        int updated = jdbcTemplate.update(sql.toString(), values.toArray());
+
+        if (updated == 0) {
+            throw new IllegalArgumentException(
+                "Student not found or no values changed.");
+        }
+    }
+    
+public void updateBackgroundFields(Long studentId, JsonNode background) {
+
+    if (background == null || !background.isObject()) {
+        throw new IllegalArgumentException(
+                "Background details must be a JSON object.");
+    }
+
+    String[] allowedFields = {
+        "community",
+        "religion",
+        "isFirstGraduate",
+        "isDifferentlyAbled",
+        "isOrphan",
+        "hasSingleParent",
+        "admissionMode",
+        "isBeediCineWorkerDependent",
+        "isCapfAssamRiflesDependent"
+    };
+
+    java.util.Map<String, String> columns = new java.util.LinkedHashMap<>();
+    columns.put("community", "community");
+    columns.put("religion", "religion");
+    columns.put("isFirstGraduate", "is_first_graduate");
+    columns.put("isDifferentlyAbled", "is_differently_abled");
+    columns.put("isOrphan", "is_orphan");
+    columns.put("hasSingleParent", "has_single_parent");
+    columns.put("admissionMode", "admission_mode");
+    columns.put("isBeediCineWorkerDependent", "is_beedi_cine_worker_dependent");
+    columns.put("isCapfAssamRiflesDependent", "is_capf_assam_rifles_dependent");
+
+    StringBuilder sql = new StringBuilder(
+            "UPDATE student_background SET ");
+    java.util.List<Object> values = new java.util.ArrayList<>();
+
+    for (String field : allowedFields) {
+        if (background.has(field)) {
+            JsonNode value = background.get(field);
+
+            if (value.isNull()) {
+                throw new IllegalArgumentException(
+                        field + " cannot be null.");
+            }
+
+            if (!values.isEmpty()) {
+                sql.append(", ");
+            }
+
+            sql.append(columns.get(field)).append(" = ?");
+
+            if (value.isBoolean()) {
+                values.add(value.booleanValue());
+            } else if (value.isTextual()) {
+                values.add(value.textValue());
+            } else {
+                throw new IllegalArgumentException(
+                        "Invalid value type for " + field + ".");
+            }
+        }
+    }
+
+    if (values.isEmpty()) {
+        throw new IllegalArgumentException(
+                "No editable background fields were provided.");
+    }
+
+    sql.append(" WHERE student_id = ?");
+    values.add(studentId);
+
+    int updated = jdbcTemplate.update(sql.toString(), values.toArray());
+
+    if (updated == 0) {
+        throw new IllegalArgumentException(
+                "Background record not found.");
+    }
+}
+
+    
+public void updateFinancialFields(Long studentId, JsonNode financial) {
+
+    if (financial == null || !financial.isObject()) {
+        throw new IllegalArgumentException(
+                "Financial details must be a JSON object.");
+    }
+
+    String[] allowedFields = {
+        "parentalAnnualIncome",
+        "parentalMonthlyIncome",
+        "incomeCertificateAvailable"
+    };
+
+    java.util.Map<String, String> columns = new java.util.LinkedHashMap<>();
+    columns.put("parentalAnnualIncome", "parental_annual_income");
+    columns.put("parentalMonthlyIncome", "parental_monthly_income");
+    columns.put("incomeCertificateAvailable", "income_certificate_available");
+
+    StringBuilder sql = new StringBuilder(
+            "UPDATE student_financial SET ");
+    java.util.List<Object> values = new java.util.ArrayList<>();
+
+    for (String field : allowedFields) {
+        if (financial.has(field)) {
+            JsonNode value = financial.get(field);
+
+            if (value.isNull()) {
+                throw new IllegalArgumentException(
+                        field + " cannot be null.");
+            }
+
+            if (!values.isEmpty()) {
+                sql.append(", ");
+            }
+
+            sql.append(columns.get(field)).append(" = ?");
+
+            if (field.equals("incomeCertificateAvailable")) {
+                if (!value.isBoolean()) {
+                    throw new IllegalArgumentException(
+                            field + " must be true or false.");
+                }
+                values.add(value.booleanValue());
+            } else {
+                if (!value.isNumber() || value.decimalValue().signum() < 0) {
+                    throw new IllegalArgumentException(
+                            field + " must be a non-negative number.");
+                }
+                values.add(value.decimalValue());
+            }
+        }
+    }
+
+    if (values.isEmpty()) {
+        throw new IllegalArgumentException(
+                "No editable financial fields were provided.");
+    }
+
+    sql.append(" WHERE student_id = ?");
+    values.add(studentId);
+
+    int updated = jdbcTemplate.update(sql.toString(), values.toArray());
+
+    if (updated == 0) {
+        throw new IllegalArgumentException(
+                "Financial record not found.");
+    }
+}
+
+public void updateEducationFields(Long studentId, JsonNode education) {
+
+    if (education == null || !education.isObject()) {
+        throw new IllegalArgumentException(
+                "Education details must be a JSON object.");
+    }
+
+    String[] allowedFields = {
+        "class10InstitutionType",
+        "class12InstitutionType",
+        "studiedGovClass6To12",
+        "studiedGovClass10To12",
+        "class10Percentage",
+        "class12Percentage",
+        "class12CompletionYear"
+    };
+
+    java.util.Map<String, String> columns = new java.util.LinkedHashMap<>();
+    columns.put("class10InstitutionType", "class_10_institution_type");
+    columns.put("class12InstitutionType", "class_12_institution_type");
+    columns.put("studiedGovClass6To12", "studied_gov_class_6_to_12");
+    columns.put("studiedGovClass10To12", "studied_gov_class_10_to_12");
+    columns.put("class10Percentage", "class_10_percentage");
+    columns.put("class12Percentage", "class_12_percentage");
+    columns.put("class12CompletionYear", "class_12_completion_year");
+
+    StringBuilder sql = new StringBuilder(
+            "UPDATE student_education_history SET ");
+    java.util.List<Object> values = new java.util.ArrayList<>();
+
+    for (String field : allowedFields) {
+        if (education.has(field)) {
+            JsonNode value = education.get(field);
+
+            if (value.isNull()) {
+                throw new IllegalArgumentException(
+                        field + " cannot be null.");
+            }
+
+            if (!values.isEmpty()) {
+                sql.append(", ");
+            }
+
+            sql.append(columns.get(field)).append(" = ?");
+
+            switch (field) {
+                case "class10InstitutionType":
+                case "class12InstitutionType":
+                    if (!value.isTextual()) {
+                        throw new IllegalArgumentException(
+                                field + " must be text.");
+                    }
+                    String type = value.textValue().toUpperCase();
+                    if (!java.util.Set.of(
+                            "GOVERNMENT", "PRIVATE", "AIDED", "UNKNOWN"
+                    ).contains(type)) {
+                        throw new IllegalArgumentException(
+                                "Invalid institution type for " + field + ".");
+                    }
+                    values.add(type);
+                    break;
+
+                case "studiedGovClass6To12":
+                case "studiedGovClass10To12":
+                    if (!value.isBoolean()) {
+                        throw new IllegalArgumentException(
+                                field + " must be true or false.");
+                    }
+                    values.add(value.booleanValue());
+                    break;
+
+                case "class10Percentage":
+                case "class12Percentage":
+                    if (!value.isNumber()
+                            || value.decimalValue().signum() < 0
+                            || value.decimalValue().compareTo(
+                                    java.math.BigDecimal.valueOf(100)) > 0) {
+                        throw new IllegalArgumentException(
+                                field + " must be between 0 and 100.");
+                    }
+                    values.add(value.decimalValue());
+                    break;
+
+                case "class12CompletionYear":
+                    if (!value.canConvertToInt()) {
+                        throw new IllegalArgumentException(
+                                field + " must be a valid year.");
+                    }
+                    int year = value.intValue();
+                    if (year < 1901 || year > 2155) {
+                        throw new IllegalArgumentException(
+                                "Invalid class 12 completion year.");
+                    }
+                    values.add(year);
+                    break;
+            }
+        }
+    }
+
+    if (values.isEmpty()) {
+        throw new IllegalArgumentException(
+                "No editable education fields were provided.");
+    }
+
+    // Keep the two government-school flags consistent.
+    if (education.has("studiedGovClass6To12")
+            && education.get("studiedGovClass6To12").asBoolean()) {
+        if (education.has("studiedGovClass10To12")
+                && !education.get("studiedGovClass10To12").asBoolean()) {
+            throw new IllegalArgumentException(
+                    "If studiedGovClass6To12 is true, "
+                    + "studiedGovClass10To12 must also be true.");
+        }
+    }
+
+    sql.append(" WHERE education_id = "
+            + "(SELECT education_id FROM "
+            + "(SELECT education_id FROM student_education_history "
+            + "WHERE student_id = ? ORDER BY education_id DESC LIMIT 1) latest)");
+
+    values.add(studentId);
+
+    int updated = jdbcTemplate.update(sql.toString(), values.toArray());
+
+    if (updated == 0) {
+        throw new IllegalArgumentException(
+                "Education record not found.");
+    }
+}
+
+public void updateAcademicFields(
+        Long studentId, JsonNode academicRecord) {
+
+    if (academicRecord == null || !academicRecord.isObject()) {
+        throw new IllegalArgumentException(
+                "Academic record must be a JSON object.");
+    }
+
+    if (!academicRecord.has("semester")
+            || !academicRecord.get("semester").canConvertToInt()) {
+        throw new IllegalArgumentException(
+                "Semester is required to identify the academic record.");
+    }
+
+    int semester = academicRecord.get("semester").intValue();
+
+    if (semester < 1 || semester > 8) {
+        throw new IllegalArgumentException(
+                "Semester must be between 1 and 8.");
+    }
+
+    String[] allowedFields = {
+        "cgpa",
+        "attendancePercentage",
+        "arrearsCount",
+        "conductGood",
+        "academicYear"
+    };
+
+    java.util.Map<String, String> columns = new java.util.LinkedHashMap<>();
+    columns.put("cgpa", "cgpa");
+    columns.put("attendancePercentage", "attendance_percentage");
+    columns.put("arrearsCount", "arrears_count");
+    columns.put("conductGood", "conduct_good");
+    columns.put("academicYear", "academic_year");
+
+    StringBuilder sql = new StringBuilder(
+            "UPDATE student_academic_records SET ");
+    java.util.List<Object> values = new java.util.ArrayList<>();
+
+    for (String field : allowedFields) {
+        if (academicRecord.has(field)) {
+            JsonNode value = academicRecord.get(field);
+
+            if (value.isNull()) {
+                throw new IllegalArgumentException(
+                        field + " cannot be null.");
+            }
+
+            if (!values.isEmpty()) {
+                sql.append(", ");
+            }
+
+            sql.append(columns.get(field)).append(" = ?");
+
+            switch (field) {
+                case "cgpa":
+                    if (!value.isNumber()
+                            || value.decimalValue().signum() < 0
+                            || value.decimalValue().compareTo(
+                                    java.math.BigDecimal.TEN) > 0) {
+                        throw new IllegalArgumentException(
+                                "CGPA must be between 0 and 10.");
+                    }
+                    values.add(value.decimalValue());
+                    break;
+
+                case "attendancePercentage":
+                    if (!value.isNumber()
+                            || value.decimalValue().signum() < 0
+                            || value.decimalValue().compareTo(
+                                    java.math.BigDecimal.valueOf(100)) > 0) {
+                        throw new IllegalArgumentException(
+                                "Attendance must be between 0 and 100.");
+                    }
+                    values.add(value.decimalValue());
+                    break;
+
+                case "arrearsCount":
+                    if (!value.isIntegralNumber()
+                            || !value.canConvertToInt()
+                            || value.intValue() < 0) {
+                        throw new IllegalArgumentException(
+                                "Arrears count must be a non-negative integer.");
+                    }
+                    values.add(value.intValue());
+                    break;
+
+                case "conductGood":
+                    if (!value.isBoolean()) {
+                        throw new IllegalArgumentException(
+                                "conductGood must be true or false.");
+                    }
+                    values.add(value.booleanValue());
+                    break;
+
+                case "academicYear":
+                    if (!value.isTextual()) {
+                        throw new IllegalArgumentException(
+                                "academicYear must be text.");
+                    }
+                    values.add(value.textValue());
+                    break;
+            }
+        }
+    }
+
+    if (values.isEmpty()) {
+        throw new IllegalArgumentException(
+                "No editable academic fields were provided.");
+    }
+
+    sql.append(" WHERE student_id = ? AND semester = ?");
+    values.add(studentId);
+    values.add(semester);
+
+    int updated = jdbcTemplate.update(sql.toString(), values.toArray());
+
+    if (updated == 0) {
+        throw new IllegalArgumentException(
+                "Academic record not found for semester " + semester + ".");
+    }
+}
+
 
 }

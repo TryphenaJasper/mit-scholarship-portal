@@ -5,6 +5,8 @@ import com.mit.scholarship.dto.StudentRegistrationRequest;
 import com.mit.scholarship.repository.StudentRepository;
 import com.mit.scholarship.dto.StudentProfileResponse;
 import com.mit.scholarship.model.Student;
+import com.mit.scholarship.dto.StudentProfilePatchRequest;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,4 +84,64 @@ public class StudentService {
 
     return response;
     }
+    @Transactional
+public void patchStudentProfile(
+        Long studentId,
+        StudentProfilePatchRequest request) {
+
+    if (request == null) {
+        throw new IllegalArgumentException(
+                "Patch request cannot be empty");
+    }
+
+    // Confirm that the student exists before updating anything.
+    if (studentRepository.findStudentById(studentId) == null) {
+        throw new IllegalArgumentException(
+                "Student not found with ID: " + studentId);
+    }
+
+    boolean hasUpdates = false;
+
+    JsonNode student = request.getStudent();
+    JsonNode background = request.getBackground();
+    JsonNode financial = request.getFinancial();
+    JsonNode education = request.getEducation();
+    JsonNode academicRecords = request.getAcademicRecords();
+
+    if (student != null && !student.isNull()) {
+        studentRepository.updateStudentFields(studentId, student);
+        hasUpdates = true;
+    }
+
+    if (background != null && !background.isNull()) {
+        studentRepository.updateBackgroundFields(studentId, background);
+        hasUpdates = true;
+    }
+
+    if (financial != null && !financial.isNull()) {
+        studentRepository.updateFinancialFields(studentId, financial);
+        hasUpdates = true;
+    }
+
+    if (education != null && !education.isNull()) {
+        studentRepository.updateEducationFields(studentId, education);
+        hasUpdates = true;
+    }
+
+    if (academicRecords != null && !academicRecords.isNull()) {
+        if (!academicRecords.isObject()) {
+            throw new IllegalArgumentException(
+                    "academicRecords must be a single JSON object");
+        }
+
+        studentRepository.updateAcademicFields(
+                studentId, academicRecords);
+        hasUpdates = true;
+    }
+
+    if (!hasUpdates) {
+        throw new IllegalArgumentException(
+                "Provide at least one section to update");
+    }
+}
 }
