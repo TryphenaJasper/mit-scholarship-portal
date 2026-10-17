@@ -7,6 +7,9 @@ import com.mit.scholarship.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.mit.scholarship.dto.StudentProfileResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Map;
 
@@ -34,6 +37,19 @@ public class StudentController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<StudentProfileResponse> getStudentProfile(
+        @PathVariable Long id) {
+
+        StudentProfileResponse profile =
+            studentService.getStudentProfile(id);
+
+        if (profile == null) {
+        return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(profile);
     }
 }
 

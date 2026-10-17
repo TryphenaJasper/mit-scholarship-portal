@@ -3,6 +3,8 @@ package com.mit.scholarship.service;
 
 import com.mit.scholarship.dto.StudentRegistrationRequest;
 import com.mit.scholarship.repository.StudentRepository;
+import com.mit.scholarship.dto.StudentProfileResponse;
+import com.mit.scholarship.model.Student;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,5 +52,34 @@ public class StudentService {
                 studentId, request.getAcademicRecords());
 
         return studentId;
+    }
+    public StudentProfileResponse getStudentProfile(Long studentId) {
+
+    // 1. Get the basic student details first
+    Student student = studentRepository.findStudentById(studentId);
+
+    // 2. If the student doesn't exist, return null
+    if (student == null) {
+        return null;
+    }
+
+    // 3. Create the complete profile response
+    StudentProfileResponse response = new StudentProfileResponse();
+
+    response.setStudent(student);
+    response.setBackground(
+        studentRepository.findBackgroundByStudentId(studentId)
+    );
+    response.setFinancial(
+        studentRepository.findFinancialByStudentId(studentId)
+    );
+    response.setEducation(
+        studentRepository.findEducationByStudentId(studentId)
+    );
+    response.setAcademicRecords(
+        studentRepository.findAcademicRecordsByStudentId(studentId)
+    );
+
+    return response;
     }
 }
