@@ -1,40 +1,85 @@
-
 package com.mit.scholarship.algorithm;
 
-import com.mit.scholarship.model.Student;
-import com.mit.scholarship.model.Scholarship;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 public class EligibilityCriteria {
 
-    public boolean isEligible(Student student, Scholarship scholarship) {
+    public boolean evaluate(
+            Object studentValue,
+            String operator,
+            String requiredValue) {
 
-        // Check minimum CGPA
-        if (student.getCgpa() < scholarship.getMinimumCgpa()) {
+        if (studentValue == null) {
             return false;
         }
 
-        // Check maximum family income
-        if (student.getFamilyIncome()
-                > scholarship.getMaximumFamilyIncome()) {
-            return false;
-        }
+        switch (operator) {
 
-        // Check department
-        if (scholarship.getDepartment() != null
-                && !scholarship.getDepartment().equalsIgnoreCase("ALL")
-                && !scholarship.getDepartment()
-                        .equalsIgnoreCase(student.getDepartment())) {
-            return false;
-        }
+            case "EQ":
+                return equals(studentValue, requiredValue);
 
-        // Check year of study
-        if (student.getYearOfStudy() < scholarship.getMinimumYear()
-                || student.getYearOfStudy() > scholarship.getMaximumYear()) {
-            return false;
-        }
+            case "NE":
+                return !equals(studentValue, requiredValue);
 
-        // All criteria passed
-        return true;
+            case "LT":
+                return compare(studentValue, requiredValue) < 0;
+
+            case "LTE":
+                return compare(studentValue, requiredValue) <= 0;
+
+            case "GT":
+                return compare(studentValue, requiredValue) > 0;
+
+            case "GTE":
+                return compare(studentValue, requiredValue) >= 0;
+
+            case "IN":
+                return isIn(studentValue, requiredValue);
+
+            case "NOT_IN":
+                return !isIn(studentValue, requiredValue);
+
+            default:
+                throw new IllegalArgumentException(
+                        "Unsupported operator: " + operator);
+        }
+    }
+
+    private boolean equals(
+            Object studentValue,
+            String requiredValue) {
+
+        return String.valueOf(studentValue)
+                .equalsIgnoreCase(requiredValue);
+    }
+
+    private int compare(
+            Object studentValue,
+            String requiredValue) {
+
+        BigDecimal studentNumber =
+                new BigDecimal(String.valueOf(studentValue));
+
+        BigDecimal requiredNumber =
+                new BigDecimal(requiredValue);
+
+        return studentNumber.compareTo(requiredNumber);
+    }
+
+    private boolean isIn(
+            Object studentValue,
+            String requiredValue) {
+
+        List<String> allowedValues =
+                Arrays.asList(requiredValue.split(","));
+
+        String value =
+                String.valueOf(studentValue).trim();
+
+        return allowedValues.stream()
+                .map(String::trim)
+                .anyMatch(value::equalsIgnoreCase);
     }
 }
-

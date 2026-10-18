@@ -5,16 +5,14 @@ import com.mit.scholarship.dto.StudentRegistrationRequest;
 import com.mit.scholarship.service.StudentService;
 import com.mit.scholarship.dto.StudentProfilePatchRequest;
 
+import com.mit.scholarship.model.Scholarship;
+import com.mit.scholarship.service.ScholarshipService;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.mit.scholarship.dto.StudentProfileResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
@@ -23,10 +21,14 @@ import java.util.Map;
 public class StudentController {
 
     private final StudentService studentService;
+    private final ScholarshipService scholarshipService;
 
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
+    public StudentController(
+        StudentService studentService,
+        ScholarshipService scholarshipService) {
+    this.studentService = studentService;
+    this.scholarshipService = scholarshipService;
+}
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> registerStudent(
@@ -80,6 +82,26 @@ public ResponseEntity<?> patchStudentProfile(
         return ResponseEntity.badRequest().body(
                 java.util.Map.of("error", e.getMessage())
         );
+    }
+}
+@GetMapping("/{id}/eligibility")
+public ResponseEntity<?> getEligibleScholarships(
+        @PathVariable Long id) {
+
+    try {
+        List<Scholarship> scholarships =
+                scholarshipService.getEligibleScholarships(id);
+
+        return ResponseEntity.ok(scholarships);
+
+    } catch (IllegalArgumentException e) {
+        if (e.getMessage() != null
+                && e.getMessage().startsWith("Student not found")) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.badRequest().body(
+                java.util.Map.of("error", e.getMessage()));
     }
 }
 }

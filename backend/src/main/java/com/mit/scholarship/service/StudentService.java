@@ -7,7 +7,7 @@ import com.mit.scholarship.dto.StudentProfileResponse;
 import com.mit.scholarship.model.Student;
 import com.mit.scholarship.dto.StudentProfilePatchRequest;
 import com.fasterxml.jackson.databind.JsonNode;
-
+import com.mit.scholarship.dto.StudentEligibilityProfile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -143,5 +143,36 @@ public void patchStudentProfile(
         throw new IllegalArgumentException(
                 "Provide at least one section to update");
     }
+}
+public StudentEligibilityProfile getEligibilityProfile(Long studentId) {
+
+    // Step 1: Fetch basic student details
+    Student student = studentRepository.findStudentById(studentId);
+
+    // Step 2: Stop if the student does not exist
+    if (student == null) {
+        return null;
+    }
+
+    // Step 3: Create the eligibility profile
+    StudentEligibilityProfile profile = new StudentEligibilityProfile();
+
+    // Step 4: Populate all five sections
+    profile.setStudent(student);
+
+    profile.setBackground(
+            studentRepository.findBackgroundByStudentId(studentId));
+
+    profile.setFinancial(
+            studentRepository.findFinancialByStudentId(studentId));
+
+    profile.setEducation(
+            studentRepository.findEducationByStudentId(studentId));
+
+    profile.setAcademicRecords(
+            studentRepository.findAcademicRecordsByStudentId(studentId));
+
+    // Step 5: Return the completed profile
+    return profile;
 }
 }

@@ -1,61 +1,70 @@
-
 package com.mit.scholarship.algorithm;
 
-import com.mit.scholarship.model.Scholarship;
-import com.mit.scholarship.model.Student;
+import org.junit.jupiter.api.Test;
 
-public class EligibilityTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    public static void main(String[] args) {
+class EligibilityTest {
 
-        EligibilityCriteria criteria = new EligibilityCriteria();
+    private final EligibilityCriteria criteria =
+            new EligibilityCriteria();
 
-        // Sample student
-        Student student = new Student(
-                "S101",
-                "CSE",
-                2,
-                8.5,
-                200000
+    @Test
+    void testEqual() {
+        assertTrue(criteria.evaluate("FEMALE", "EQ", "female"));
+    }
+
+    @Test
+    void testNotEqual() {
+        assertTrue(criteria.evaluate("MALE", "NE", "FEMALE"));
+    }
+
+    @Test
+    void testLessThan() {
+        assertTrue(criteria.evaluate(180000, "LT", "250000"));
+        assertFalse(criteria.evaluate(250000, "LT", "250000"));
+    }
+
+    @Test
+    void testLessThanOrEqual() {
+        assertTrue(criteria.evaluate(250000, "LTE", "250000"));
+        assertFalse(criteria.evaluate(260000, "LTE", "250000"));
+    }
+
+    @Test
+    void testGreaterThan() {
+        assertTrue(criteria.evaluate(9, "GT", "8"));
+        assertFalse(criteria.evaluate(8, "GT", "8"));
+    }
+
+    @Test
+    void testGreaterThanOrEqual() {
+        assertTrue(criteria.evaluate(7, "GTE", "7"));
+        assertFalse(criteria.evaluate(6, "GTE", "7"));
+    }
+
+    @Test
+    void testIn() {
+        assertTrue(criteria.evaluate("BC", "IN", "BC,MBC,SC,ST"));
+        assertFalse(criteria.evaluate("GENERAL", "IN", "BC,MBC,SC,ST"));
+    }
+
+    @Test
+    void testNotIn() {
+        assertTrue(criteria.evaluate("GENERAL", "NOT_IN", "BC,MBC,SC,ST"));
+        assertFalse(criteria.evaluate("SC", "NOT_IN", "BC,MBC,SC,ST"));
+    }
+
+    @Test
+    void testNullStudentValue() {
+        assertFalse(criteria.evaluate(null, "EQ", "FEMALE"));
+    }
+
+    @Test
+    void testUnsupportedOperator() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> criteria.evaluate("BC", "UNKNOWN", "BC")
         );
-
-        // Sample scholarship
-        Scholarship scholarship = new Scholarship(
-                "SCH101",
-                "Merit Scholarship",
-                7.5,
-                300000,
-                "CSE",
-                1,
-                3
-        );
-
-        // Test 1: Student meets all requirements
-        System.out.println("Test 1: "
-                + criteria.isEligible(student, scholarship));
-
-        // Test 2: Student's CGPA is too low
-        student.setCgpa(6.0);
-        System.out.println("Test 2: "
-                + criteria.isEligible(student, scholarship));
-
-        // Test 3: Family income exceeds the limit
-        student.setCgpa(8.5);
-        student.setFamilyIncome(400000);
-        System.out.println("Test 3: "
-                + criteria.isEligible(student, scholarship));
-
-        // Test 4: Department does not match
-        student.setFamilyIncome(200000);
-        student.setDepartment("ECE");
-        System.out.println("Test 4: "
-                + criteria.isEligible(student, scholarship));
-
-        // Test 5: Year of study is outside the allowed range
-        student.setDepartment("CSE");
-        student.setYearOfStudy(4);
-        System.out.println("Test 5: "
-                + criteria.isEligible(student, scholarship));
     }
 }
-

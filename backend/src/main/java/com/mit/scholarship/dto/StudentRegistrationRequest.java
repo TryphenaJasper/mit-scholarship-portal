@@ -2,7 +2,6 @@ package com.mit.scholarship.dto;
 
 import com.mit.scholarship.model.Student;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 public class StudentRegistrationRequest {
