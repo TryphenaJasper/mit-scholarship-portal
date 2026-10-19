@@ -22,6 +22,15 @@ public class Scholarship {
     private String officialUrl;
     private String status;
     private LocalDateTime lastVerifiedAt;
+    private Boolean allowsCombination;
+
+public Boolean getAllowsCombination() {
+    return allowsCombination;
+}
+
+public void setAllowsCombination(Boolean allowsCombination) {
+    this.allowsCombination = allowsCombination;
+}
 
     public Scholarship() {
     }
