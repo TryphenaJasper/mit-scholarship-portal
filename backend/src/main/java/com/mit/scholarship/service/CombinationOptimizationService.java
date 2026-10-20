@@ -114,6 +114,32 @@ compatibilityService.analyzeAllPairs();
             scholarshipBenefits.put(String.valueOf(id), benefit);
             scholarshipById.put(id, scholarship);
         }
+        
+List<Map<String, Object>> eligibleScholarshipDetails =
+        new ArrayList<>();
+
+for (Scholarship scholarship : eligibleScholarships) {
+
+    Map<String, Object> item = new LinkedHashMap<>();
+
+    item.put("scholarshipId", scholarship.getScholarshipId());
+    item.put("name", scholarship.getName());
+    item.put("amount", scholarship.getAmount());
+    item.put("currency", scholarship.getCurrency());
+    item.put("amountPeriod", scholarship.getAmountPeriod());
+
+    Long id = scholarship.getScholarshipId();
+
+    if (id != null && scholarshipBenefits.containsKey(String.valueOf(id))) {
+        item.put(
+                "estimatedRemainingBenefit",
+                scholarshipBenefits.get(String.valueOf(id))
+        );
+    }
+
+    eligibleScholarshipDetails.add(item);
+}
+
 
         List<Long> bestCombination = optimizer.optimize(
                 eligibleIds,
@@ -150,7 +176,8 @@ compatibilityService.analyzeAllPairs();
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("studentId", studentId);
         response.put("currentSemester", currentSemester);
-        response.put("eligibleScholarshipCount", eligibleIds.size());
+        response.put("eligibleScholarshipCount", eligibleScholarshipDetails.size());
+        response.put("eligibleScholarships", eligibleScholarshipDetails);
         response.put("selectedScholarships", selectedScholarships);
         response.put("totalEstimatedBenefit", totalBenefit);
 
