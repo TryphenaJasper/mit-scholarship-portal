@@ -1,20 +1,25 @@
 
 package com.mit.scholarship.controller;
-
-import com.mit.scholarship.dto.StudentRegistrationRequest;
-import com.mit.scholarship.service.StudentService;
-import com.mit.scholarship.dto.StudentProfilePatchRequest;
-
-import com.mit.scholarship.model.Scholarship;
-import com.mit.scholarship.service.ScholarshipService;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.mit.scholarship.dto.StudentProfileResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import com.mit.scholarship.dto.GapAnalysisResponse;
+import com.mit.scholarship.dto.StudentProfilePatchRequest;
+import com.mit.scholarship.dto.StudentProfileResponse;
+import com.mit.scholarship.dto.StudentRegistrationRequest;
+import com.mit.scholarship.model.Scholarship;
+import com.mit.scholarship.service.ScholarshipService;
+import com.mit.scholarship.service.StudentService;
 
 @RestController
 @RequestMapping("/api/students")
@@ -104,5 +109,31 @@ public ResponseEntity<?> getEligibleScholarships(
                 java.util.Map.of("error", e.getMessage()));
     }
 }
+
+@GetMapping("/{studentId}/scholarships/{scholarshipId}/gap-analysis")
+public ResponseEntity<?> getScholarshipGapAnalysis(
+        @PathVariable Long studentId,
+        @PathVariable Long scholarshipId) {
+
+    try {
+        GapAnalysisResponse response =
+                scholarshipService.getScholarshipGapAnalysis(
+                        studentId, scholarshipId);
+
+        return ResponseEntity.ok(response);
+
+    } catch (IllegalArgumentException e) {
+
+        if (e.getMessage() != null
+                && (e.getMessage().startsWith("Student not found")
+                || e.getMessage().startsWith("Scholarship not found"))) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.badRequest().body(
+                java.util.Map.of("error", e.getMessage()));
+    }
+}
+
 }
 
