@@ -15,21 +15,23 @@ import com.mit.scholarship.algorithm.CompatibilityRule;
 import com.mit.scholarship.algorithm.ScholarshipCompatibilityAnalyzer;
 import com.mit.scholarship.model.Scholarship;
 import com.mit.scholarship.service.ScholarshipService;
-
 @RestController
 @RequestMapping("/api/scholarships")
 public class ScholarshipController {
 
     private final ScholarshipService scholarshipService;
     private final CompatibilityAnalysisService compatibilityAnalysisService;
+    private final com.mit.scholarship.service.CombinationOptimizationService combinationOptimizationService;
 
     public ScholarshipController(
-            ScholarshipService scholarshipService,
-            CompatibilityAnalysisService compatibilityAnalysisService) {
+        ScholarshipService scholarshipService,
+        CompatibilityAnalysisService compatibilityAnalysisService,
+        com.mit.scholarship.service.CombinationOptimizationService combinationOptimizationService) {
 
-        this.scholarshipService = scholarshipService;
-        this.compatibilityAnalysisService = compatibilityAnalysisService;
-    }
+    this.scholarshipService = scholarshipService;
+    this.compatibilityAnalysisService = compatibilityAnalysisService;
+    this.combinationOptimizationService = combinationOptimizationService;
+}
 
     @GetMapping
     public List<Scholarship> getAllScholarships() {
@@ -63,4 +65,10 @@ public class ScholarshipController {
     public List<CompatibilityRule> analyzeAllCompatibilityPairs() {
         return compatibilityAnalysisService.analyzeAllPairs();
     }
+    @GetMapping("/optimize/{studentId}")
+public java.util.Map<String, Object> optimizeCombination(
+        @PathVariable Long studentId) {
+
+    return combinationOptimizationService.optimizeForStudent(studentId);
+}
 }

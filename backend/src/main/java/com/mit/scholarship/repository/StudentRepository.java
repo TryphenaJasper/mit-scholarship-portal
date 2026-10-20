@@ -1,27 +1,26 @@
 
 package com.mit.scholarship.repository;
 
-import com.mit.scholarship.dto.StudentRegistrationRequest;
-import com.mit.scholarship.dto.StudentRegistrationRequest.AcademicRecordDetails;
-import com.mit.scholarship.dto.StudentRegistrationRequest.BackgroundDetails;
-import com.mit.scholarship.dto.StudentRegistrationRequest.EducationDetails;
-import com.mit.scholarship.dto.StudentRegistrationRequest.FinancialDetails;
-import com.mit.scholarship.model.Student;
-
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+import java.util.List;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import com.fasterxml.jackson.databind.JsonNode;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.Types;
-import java.util.List;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.mit.scholarship.dto.StudentRegistrationRequest;
+import com.mit.scholarship.dto.StudentRegistrationRequest.AcademicRecordDetails;
+import com.mit.scholarship.dto.StudentRegistrationRequest.BackgroundDetails;
+import com.mit.scholarship.dto.StudentRegistrationRequest.EducationDetails;
+import com.mit.scholarship.dto.StudentRegistrationRequest.FinancialDetails;
+import com.mit.scholarship.model.Student;
 
 @Repository
 public class StudentRepository {
@@ -223,46 +222,60 @@ public class StudentRepository {
     }
 
     // 2. Retrieve background details
-    public StudentRegistrationRequest.BackgroundDetails
-            findBackgroundByStudentId(Long studentId) {
+    
+public StudentRegistrationRequest.BackgroundDetails
+        findBackgroundByStudentId(Long studentId) {
 
-        String sql = """
-                SELECT community, religion, is_first_graduate,
-                       is_differently_abled, is_orphan, has_single_parent,
-                       admission_mode, is_beedi_cine_worker_dependent,
-                       is_capf_assam_rifles_dependent
-                FROM student_background
-                WHERE student_id = ?
-                """;
+    String sql = """
+            SELECT community, religion, is_first_graduate,
+                   is_differently_abled, is_orphan, has_single_parent,
+                   admission_mode, has_other_scholarship,
+                   is_beedi_cine_worker_dependent,
+                   is_capf_assam_rifles_dependent
+            FROM student_background
+            WHERE student_id = ?
+            """;
 
-        List<StudentRegistrationRequest.BackgroundDetails> results =
-                jdbcTemplate.query(sql, (rs, rowNum) -> {
-                    StudentRegistrationRequest.BackgroundDetails details =
-                            new StudentRegistrationRequest.BackgroundDetails();
+    List<StudentRegistrationRequest.BackgroundDetails> results =
+            jdbcTemplate.query(sql, (rs, rowNum) -> {
+                StudentRegistrationRequest.BackgroundDetails details =
+                        new StudentRegistrationRequest.BackgroundDetails();
 
-                    details.setCommunity(rs.getString("community"));
-                    details.setReligion(rs.getString("religion"));
-                    details.setIsFirstGraduate(
-                            getNullableBoolean(rs, "is_first_graduate"));
-                    details.setIsDifferentlyAbled(
-                            getNullableBoolean(rs, "is_differently_abled"));
-                    details.setIsOrphan(
-                            getNullableBoolean(rs, "is_orphan"));
-                    details.setHasSingleParent(
-                            getNullableBoolean(rs, "has_single_parent"));
-                    details.setAdmissionMode(rs.getString("admission_mode"));
-                    details.setIsBeediCineWorkerDependent(
-                            getNullableBoolean(
-                                    rs, "is_beedi_cine_worker_dependent"));
-                    details.setIsCapfAssamRiflesDependent(
-                            getNullableBoolean(
-                                    rs, "is_capf_assam_rifles_dependent"));
+                details.setCommunity(rs.getString("community"));
+                details.setReligion(rs.getString("religion"));
 
-                    return details;
-                }, studentId);
+                details.setIsFirstGraduate(
+                        getNullableBoolean(rs, "is_first_graduate"));
 
-        return results.isEmpty() ? null : results.get(0);
-    }
+                details.setIsDifferentlyAbled(
+                        getNullableBoolean(rs, "is_differently_abled"));
+
+                details.setIsOrphan(
+                        getNullableBoolean(rs, "is_orphan"));
+
+                details.setHasSingleParent(
+                        getNullableBoolean(rs, "has_single_parent"));
+
+                details.setAdmissionMode(
+                        rs.getString("admission_mode"));
+
+                details.setHasOtherScholarship(
+                        getNullableBoolean(rs, "has_other_scholarship"));
+
+                details.setIsBeediCineWorkerDependent(
+                        getNullableBoolean(
+                                rs, "is_beedi_cine_worker_dependent"));
+
+                details.setIsCapfAssamRiflesDependent(
+                        getNullableBoolean(
+                                rs, "is_capf_assam_rifles_dependent"));
+
+                return details;
+            }, studentId);
+
+    return results.isEmpty() ? null : results.get(0);
+}
+
 
     // 3. Retrieve financial details
     public StudentRegistrationRequest.FinancialDetails
@@ -454,6 +467,7 @@ public class StudentRepository {
                 "Student not found or no values changed.");
         }
     }
+
     
 public void updateBackgroundFields(Long studentId, JsonNode background) {
 
@@ -470,11 +484,14 @@ public void updateBackgroundFields(Long studentId, JsonNode background) {
         "isOrphan",
         "hasSingleParent",
         "admissionMode",
+        "hasOtherScholarship",
         "isBeediCineWorkerDependent",
         "isCapfAssamRiflesDependent"
     };
 
-    java.util.Map<String, String> columns = new java.util.LinkedHashMap<>();
+    java.util.Map<String, String> columns =
+            new java.util.LinkedHashMap<>();
+
     columns.put("community", "community");
     columns.put("religion", "religion");
     columns.put("isFirstGraduate", "is_first_graduate");
@@ -482,36 +499,53 @@ public void updateBackgroundFields(Long studentId, JsonNode background) {
     columns.put("isOrphan", "is_orphan");
     columns.put("hasSingleParent", "has_single_parent");
     columns.put("admissionMode", "admission_mode");
-    columns.put("isBeediCineWorkerDependent", "is_beedi_cine_worker_dependent");
-    columns.put("isCapfAssamRiflesDependent", "is_capf_assam_rifles_dependent");
+    columns.put("hasOtherScholarship", "has_other_scholarship");
+    columns.put(
+            "isBeediCineWorkerDependent",
+            "is_beedi_cine_worker_dependent");
+    columns.put(
+            "isCapfAssamRiflesDependent",
+            "is_capf_assam_rifles_dependent");
 
     StringBuilder sql = new StringBuilder(
             "UPDATE student_background SET ");
+
     java.util.List<Object> values = new java.util.ArrayList<>();
 
     for (String field : allowedFields) {
-        if (background.has(field)) {
-            JsonNode value = background.get(field);
 
-            if (value.isNull()) {
+        if (!background.has(field)) {
+            continue;
+        }
+
+        JsonNode value = background.get(field);
+
+        if (!values.isEmpty()) {
+            sql.append(", ");
+        }
+
+        sql.append(columns.get(field)).append(" = ?");
+
+        if (value.isNull()) {
+
+            if (!"hasOtherScholarship".equals(field)) {
                 throw new IllegalArgumentException(
                         field + " cannot be null.");
             }
 
-            if (!values.isEmpty()) {
-                sql.append(", ");
-            }
+            values.add(null);
 
-            sql.append(columns.get(field)).append(" = ?");
+        } else if (value.isBoolean()) {
 
-            if (value.isBoolean()) {
-                values.add(value.booleanValue());
-            } else if (value.isTextual()) {
-                values.add(value.textValue());
-            } else {
-                throw new IllegalArgumentException(
-                        "Invalid value type for " + field + ".");
-            }
+            values.add(value.booleanValue());
+
+        } else if (value.isTextual()) {
+
+            values.add(value.textValue());
+
+        } else {
+            throw new IllegalArgumentException(
+                    "Invalid value type for " + field + ".");
         }
     }
 
@@ -523,15 +557,16 @@ public void updateBackgroundFields(Long studentId, JsonNode background) {
     sql.append(" WHERE student_id = ?");
     values.add(studentId);
 
-    int updated = jdbcTemplate.update(sql.toString(), values.toArray());
+    int updated = jdbcTemplate.update(
+            sql.toString(), values.toArray());
 
     if (updated == 0) {
         throw new IllegalArgumentException(
                 "Background record not found.");
     }
 }
-
-    
+  
+  
 public void updateFinancialFields(Long studentId, JsonNode financial) {
 
     if (financial == null || !financial.isObject()) {

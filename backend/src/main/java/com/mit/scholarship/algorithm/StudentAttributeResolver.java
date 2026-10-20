@@ -2,7 +2,6 @@
 package com.mit.scholarship.algorithm;
 
 import com.mit.scholarship.dto.StudentEligibilityProfile;
-import com.mit.scholarship.dto.StudentRegistrationRequest;
 import com.mit.scholarship.dto.StudentRegistrationRequest.AcademicRecordDetails;
 
 public class StudentAttributeResolver {
@@ -25,6 +24,33 @@ public class StudentAttributeResolver {
             case "degree":
                 return profile.getStudent() == null
                         ? null : profile.getStudent().getDegree();
+            case "degree_type": {
+    if (profile.getStudent() == null
+            || profile.getStudent().getDegree() == null) {
+        return null;
+    }
+
+    String degree = profile.getStudent().getDegree()
+            .trim().toUpperCase();
+
+    if (degree.equals("BE")
+            || degree.equals("B.E.")
+            || degree.equals("BTECH")
+            || degree.equals("B.TECH")
+            || degree.equals("UG")) {
+        return "UG";
+    }
+
+    if (degree.equals("ME")
+            || degree.equals("M.E.")
+            || degree.equals("MTECH")
+            || degree.equals("M.TECH")
+            || degree.equals("PG")) {
+        return "PG";
+    }
+
+    return degree;
+}
 
             case "department":
                 return profile.getStudent() == null
@@ -62,6 +88,32 @@ public class StudentAttributeResolver {
             case "admission_mode":
                 return profile.getBackground() == null
                         ? null : profile.getBackground().getAdmissionMode();
+            
+case "other_scholarship":
+case "has_other_scholarship":
+    return profile.getBackground() == null
+            ? null
+            : profile.getBackground().getHasOtherScholarship();
+
+            case "single_window_admission": {
+    if (profile.getBackground() == null
+            || profile.getBackground().getAdmissionMode() == null) {
+        return null;
+    }
+
+    String mode = profile.getBackground().getAdmissionMode()
+            .trim()
+            .replace('-', '_')
+            .replace(' ', '_')
+            .toUpperCase();
+
+    if (mode.equals("SINGLE_WINDOW")) {
+        return true;
+    }
+
+    // Other admission modes need verification.
+    return null;
+}
 
             case "is_beedi_cine_worker_dependent":
                 return profile.getBackground() == null
