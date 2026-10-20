@@ -15,11 +15,10 @@
 </head>
 
 <body>
-    <nav class="navbar">
-
+    
+<nav class="navbar">
     <div class="logo">
         <div class="logo-mark">M</div>
-
         <div>
             <strong>MIT Scholarships</strong>
             <span>Anna University</span>
@@ -33,11 +32,31 @@
         <a href="help.html">Help</a>
     </div>
 
-    <a href="profile.html" class="profile-button">
-        My Profile
-    </a>
+    <div class="profile-menu">
+        <button
+            type="button"
+            class="profile-icon-button"
+            id="profileMenuButton"
+            aria-label="Open profile menu"
+            aria-expanded="false"
+        >
+            <svg viewBox="0 0 24 24" width="24" height="24"
+                 fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 21a8 8 0 0 1 16 0"></path>
+            </svg>
+        </button>
 
+        <div class="profile-dropdown" id="profileDropdown" hidden>
+            <a href="profile.html">Create Profile</a>
+<a href="my-profile.html">My Profile</a>
+            <button type="button" id="logoutButton">Logout</button>
+        </div>
+    </div>
 </nav>
+
 
 <div class="profile-page">
 
@@ -47,62 +66,40 @@
             <h1>Tell us about yourself</h1>
 
             <p>
-                These details are checked against every scholarship MIT students
-                can currently apply for. Nothing here is submitted anywhere —
-                it only runs the eligibility check on this device.
+                Enter your details to discover scholarships that match your profile and eligibility. Make sure your information is accurate to receive relevant scholarship recommendations.
             </p>
         </div>
 
 
         <form id="profileForm">
 
+            
             <section class="form-section">
-
                 <h2>Identity</h2>
 
                 <div class="form-grid">
-
                     <div class="form-group">
-                        <label for="registerNumber">
-                            Register number
-                        </label>
-
-                        <input
-                            type="text"
-                            id="registerNumber"
-                            required
-                        >
+                        <label for="registerNumber">Register number</label>
+                        <input type="text" id="registerNumber" required>
                     </div>
 
-
                     <div class="form-group">
-                        <label for="password">
-                            Password
-                        </label>
-
-                        <input
-                            type="password"
-                            id="password"
-                            required
-                        >
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" required>
                     </div>
 
+                    <div class="form-group">
+                        <label for="fullName">Full name</label>
+                        <input type="text" id="fullName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of birth</label>
+                        <input type="date" id="dateOfBirth">
+                    </div>
                 </div>
-
-
-                <div class="form-group full-width">
-                    <label for="fullName">
-                        Full name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="fullName"
-                        required
-                    >
-                </div>
-
             </section>
+
 
 
             <section class="form-section">
@@ -156,6 +153,18 @@
                             min="1"
                             max="8"
                             required
+                        >
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="class10">SSLC (10th) percentage</label>
+                        <input
+                            type="number"
+                            id="class10"
+                            min="0"
+                            max="100"
+                            step="0.01"
                         >
                     </div>
 
@@ -244,6 +253,7 @@
             </section>
 
 
+            
             <section class="form-section">
 
                 <h2>Family &amp; community</h2>
@@ -251,10 +261,7 @@
                 <div class="form-grid">
 
                     <div class="form-group">
-                        <label for="gender">
-                            Gender
-                        </label>
-
+                        <label for="gender">Gender</label>
                         <select id="gender" required>
                             <option value="">Select</option>
                             <option value="female">Female</option>
@@ -263,12 +270,8 @@
                         </select>
                     </div>
 
-
                     <div class="form-group">
-                        <label for="category">
-                            Category
-                        </label>
-
+                        <label for="category">Category</label>
                         <select id="category" required>
                             <option value="">Select</option>
                             <option value="BC">BC</option>
@@ -280,12 +283,8 @@
                         </select>
                     </div>
 
-
                     <div class="form-group">
-                        <label for="community">
-                            Religion / community
-                        </label>
-
+                        <label for="community">Religion / community</label>
                         <select id="community" required>
                             <option value="">Select</option>
                             <option value="Hindu">Hindu</option>
@@ -297,87 +296,97 @@
                         </select>
                     </div>
 
-
                     <div class="form-group">
-                        <label for="income">
-                            Parental annual income (₹)
-                        </label>
-
-                        <input
-                            type="number"
-                            id="income"
-                            min="0"
-                            required
-                        >
+                        <label for="income">Parental annual income (₹)</label>
+                        <input type="number" id="income" min="0" required>
                     </div>
 
                 </div>
 
-
                 <div class="radio-grid">
 
                     <div class="radio-group">
-
-                        <label>
-                            First graduate in your family?
-                        </label>
-
+                        <label>Do you have an income certificate?</label>
                         <div class="radio-options">
-
                             <label>
-                                <input
-                                    type="radio"
-                                    name="firstGraduate"
-                                    value="yes"
-                                    required
-                                >
+                                <input type="radio" name="incomeCertificate" value="yes" required>
                                 Yes
                             </label>
-
                             <label>
-                                <input
-                                    type="radio"
-                                    name="firstGraduate"
-                                    value="no"
-                                >
+                                <input type="radio" name="incomeCertificate" value="no">
                                 No
                             </label>
-
                         </div>
-
                     </div>
 
-
                     <div class="radio-group">
-
-                        <label>
-                            Studied 10th–12th in a Government /
-                            Govt-aided school?
-                        </label>
-
+                        <label>First graduate in your family?</label>
                         <div class="radio-options">
-
                             <label>
-                                <input
-                                    type="radio"
-                                    name="governmentSchool"
-                                    value="yes"
-                                    required
-                                >
+                                <input type="radio" name="firstGraduate" value="yes" required>
                                 Yes
                             </label>
-
                             <label>
-                                <input
-                                    type="radio"
-                                    name="governmentSchool"
-                                    value="no"
-                                >
+                                <input type="radio" name="firstGraduate" value="no">
                                 No
                             </label>
-
                         </div>
+                    </div>
 
+                    <div class="radio-group">
+                        <label>Are you an orphan?</label>
+                        <div class="radio-options">
+                            <label>
+                                <input type="radio" name="orphan" value="yes" required>
+                                Yes
+                            </label>
+                            <label>
+                                <input type="radio" name="orphan" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="radio-group">
+                        <label>Do you belong to a single-parent family?</label>
+                        <div class="radio-options">
+                            <label>
+                                <input type="radio" name="singleParent" value="yes" required>
+                                Yes
+                            </label>
+                            <label>
+                                <input type="radio" name="singleParent" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="radio-group">
+                        <label>Did you study in a government school from Classes 6–12?</label>
+                        <div class="radio-options">
+                            <label>
+                                <input type="radio" name="governmentSchool6To12" value="yes" required>
+                                Yes
+                            </label>
+                            <label>
+                                <input type="radio" name="governmentSchool6To12" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="radio-group">
+                        <label>Did you study in a government school from Classes 10–12?</label>
+                        <div class="radio-options">
+                            <label>
+                                <input type="radio" name="governmentSchool10To12" value="yes" required>
+                                Yes
+                            </label>
+                            <label>
+                                <input type="radio" name="governmentSchool10To12" value="no">
+                                No
+                            </label>
+                        </div>
                     </div>
 
                 </div>
