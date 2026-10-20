@@ -133,68 +133,69 @@ body {
 }
 
 
+
 /* =========================
    PROFILE
 ========================= */
 
 .profile-menu {
     position: relative;
-}
-
-.profile-button {
-    border: none;
-    background: transparent;
-    color: white;
     display: flex;
     align-items: center;
-    gap: 9px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 13px;
 }
 
-.profile-avatar {
-    width: 35px;
-    height: 35px;
+.profile-icon-button {
+    width: 40px;
+    height: 40px;
+    border: none;
     border-radius: 50%;
     background: white;
     color: var(--burgundy);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
-.profile-arrow {
-    color: #F9C9D5;
+.profile-icon-button:hover {
+    background: var(--pink-soft);
 }
 
 .profile-dropdown {
     position: absolute;
-    top: 48px;
+    top: calc(100% + 10px);
     right: 0;
+    z-index: 1000;
     width: 175px;
     background: white;
     border: 1px solid var(--border);
     border-radius: 7px;
     box-shadow: 0 10px 25px rgba(127, 29, 29, 0.15);
-    display: none;
     overflow: hidden;
 }
 
-.profile-dropdown.show {
-    display: block;
+.profile-dropdown[hidden] {
+    display: none !important;
 }
 
-.profile-dropdown a {
+.profile-dropdown a,
+.profile-dropdown button {
     display: block;
+    width: 100%;
     padding: 12px 15px;
+    border: none;
+    background: white;
     color: var(--text);
+    text-align: left;
     text-decoration: none;
+    font-family: inherit;
     font-size: 13px;
+    cursor: pointer;
 }
 
-.profile-dropdown a:hover {
+.profile-dropdown a:hover,
+.profile-dropdown button:hover {
     background: var(--pink-soft);
     color: var(--burgundy);
 }

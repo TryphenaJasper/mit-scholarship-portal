@@ -57,36 +57,38 @@
     </div>
 
 
-    <div class="profile-menu">
+    
+<div class="profile-menu">
+    <button
+        type="button"
+        class="profile-icon-button"
+        id="profileMenuButton"
+        aria-label="Open profile menu"
+        aria-expanded="false"
+    >
+        <svg
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+        >
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21a8 8 0 0 1 16 0"></path>
+        </svg>
+    </button>
 
-        <button class="profile-button" id="profileButton">
-
-            <div class="profile-avatar">
-                J
-            </div>
-
-            <span>Jasper</span>
-
-            
-
-        </button>
-
-
-        <div class="profile-dropdown" id="profileDropdown">
-
-            <a href="profile.html">
-                My Profile
-            </a>
-
-            
-
-            <a href="#">
-                Logout
-            </a>
-
-        </div>
-
+    <div class="profile-dropdown" id="profileDropdown" hidden>
+        <a href="profile.html">Create Profile</a>
+<a href="my-profile.html">My Profile</a>
+        <button type="button" id="logoutButton">Logout</button>
     </div>
+</div>
+
 
 </nav>
 

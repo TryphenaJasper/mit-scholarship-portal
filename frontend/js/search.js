@@ -1059,58 +1059,60 @@ function setupToggles() {
    PROFILE DROPDOWN
 ========================================================= */
 
+
 function setupProfileDropdown() {
-
-    const profileButton =
-        document.getElementById(
-            "profileButton"
-        );
-
+    const profileMenuButton =
+        document.getElementById("profileMenuButton");
 
     const profileDropdown =
-        document.getElementById(
-            "profileDropdown"
-        );
+        document.getElementById("profileDropdown");
 
+    const logoutButton =
+        document.getElementById("logoutButton");
 
-    if (
-        !profileButton ||
-        !profileDropdown
-    ) {
+    if (!profileMenuButton || !profileDropdown) {
         return;
     }
 
+    profileMenuButton.addEventListener("click", function(event) {
+        event.stopPropagation();
 
-    profileButton.addEventListener(
-        "click",
-        function(event) {
+        const isOpening = profileDropdown.hidden;
 
-            event.stopPropagation();
+        profileDropdown.hidden = !isOpening;
 
-            profileDropdown.classList.toggle(
-                "show"
+        profileMenuButton.setAttribute(
+            "aria-expanded",
+            String(isOpening)
+        );
+    });
+
+    document.addEventListener("click", function(event) {
+        if (
+            !profileMenuButton.contains(event.target) &&
+            !profileDropdown.contains(event.target)
+        ) {
+            profileDropdown.hidden = true;
+
+            profileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
             );
         }
-    );
+    });
 
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function() {
+            profileDropdown.hidden = true;
 
-    document.addEventListener(
-        "click",
-        function(event) {
-
-            if (
-                !event.target.closest(
-                    ".profile-menu"
-                )
-            ) {
-
-                profileDropdown.classList.remove(
-                    "show"
-                );
-            }
-        }
-    );
+            profileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        });
+    }
 }
+
 
 
 /* =========================================================
