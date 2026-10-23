@@ -1,5 +1,6 @@
 
 package com.mit.scholarship.service;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,23 +34,22 @@ public class ScholarshipService {
     private final GapAnalysisResultRepository gapAnalysisResultRepository;
 
     public ScholarshipService(
-        ScholarshipRepository scholarshipRepository,
-        ScholarshipRequirementRepository requirementRepository,
-        StudentService studentService,
-        GapAnalysisRunRepository gapAnalysisRunRepository,
-        GapAnalysisResultRepository gapAnalysisResultRepository) {
+            ScholarshipRepository scholarshipRepository,
+            ScholarshipRequirementRepository requirementRepository,
+            StudentService studentService,
+            GapAnalysisRunRepository gapAnalysisRunRepository,
+            GapAnalysisResultRepository gapAnalysisResultRepository) {
 
-    this.scholarshipRepository = scholarshipRepository;
-    this.requirementRepository = requirementRepository;
-    this.studentService = studentService;
+        this.scholarshipRepository = scholarshipRepository;
+        this.requirementRepository = requirementRepository;
+        this.studentService = studentService;
+        this.gapAnalysisRunRepository = gapAnalysisRunRepository;
+        this.gapAnalysisResultRepository = gapAnalysisResultRepository;
 
-    this.gapAnalysisRunRepository = gapAnalysisRunRepository;
-    this.gapAnalysisResultRepository = gapAnalysisResultRepository;
-
-    this.eligibilityCriteria = new EligibilityCriteria();
-    this.attributeResolver = new StudentAttributeResolver();
-    this.gapAnalysis = new GapAnalysis();
-}
+        this.eligibilityCriteria = new EligibilityCriteria();
+        this.attributeResolver = new StudentAttributeResolver();
+        this.gapAnalysis = new GapAnalysis();
+    }
 
     public List<Scholarship> getAllScholarships() {
         return scholarshipRepository.findAll();
@@ -80,13 +80,57 @@ public class ScholarshipService {
                     requirementRepository.findByScholarshipId(
                             scholarship.getScholarshipId());
 
+            // Do not assume eligibility when requirements are missing.
+            if (requirements == null || requirements.isEmpty()) {
+                continue;
+            }
+
             boolean eligible = true;
 
             for (ScholarshipRequirement requirement : requirements) {
 
-                Object studentValue = attributeResolver.resolve(
-                        profile,
-                        requirement.getAttribute());
+                String attribute = requirement.getAttribute();
+
+                // Scholarship 1 has different income limits
+                // for SCC and other communities.
+                if (Long.valueOf(1L).equals(
+                        scholarship.getScholarshipId())
+                        && "parental_annual_income"
+                                .equalsIgnoreCase(attribute)) {
+
+                    Object communityValue =
+                            attributeResolver.resolve(profile, "community");
+
+                    if (communityValue == null) {
+                        eligible = false;
+                        break;
+                    }
+
+                    boolean isSCC = "SCC".equalsIgnoreCase(
+                            communityValue.toString().trim());
+
+                    String requiredValue = requirement.getRequiredValue();
+
+                    boolean isSCCLimit = "200000".equals(
+                            requiredValue == null
+                                    ? ""
+                                    : requiredValue.trim());
+
+                    // Ignore the income limit that does not apply.
+                    if (isSCC != isSCCLimit) {
+                        continue;
+                    }
+                }
+
+                Object studentValue =
+                        attributeResolver.resolve(profile, attribute);
+
+                // Missing other_scholarship information is not
+                // treated as a failed requirement.
+                if ("other_scholarship".equalsIgnoreCase(attribute)
+                        && studentValue == null) {
+                    continue;
+                }
 
                 boolean requirementPassed = false;
 
@@ -108,52 +152,47 @@ public class ScholarshipService {
             }
         }
 
-        return eligibleScholarships;}
-@Transactional
-public GapAnalysisResponse getScholarshipGapAnalysis(
-        Long studentId,
-        Long scholarshipId) {
-
-    StudentEligibilityProfile profile =
-            studentService.getEligibilityProfile(studentId);
-
-    if (profile == null) {
-        throw new IllegalArgumentException(
-                "Student not found with ID: " + studentId);
+        return eligibleScholarships;
     }
 
-    Scholarship scholarship =
-            scholarshipRepository.findById(scholarshipId);
+    @Transactional
+    public GapAnalysisResponse getScholarshipGapAnalysis(
+            Long studentId,
+            Long scholarshipId) {
 
-    if (scholarship == null) {
-        throw new IllegalArgumentException(
-                "Scholarship not found with ID: " + scholarshipId);
+        StudentEligibilityProfile profile =
+                studentService.getEligibilityProfile(studentId);
+
+        if (profile == null) {
+            throw new IllegalArgumentException(
+                    "Student not found with ID: " + studentId);
+        }
+
+        Scholarship scholarship =
+                scholarshipRepository.findById(scholarshipId);
+
+        if (scholarship == null) {
+            throw new IllegalArgumentException(
+                    "Scholarship not found with ID: " + scholarshipId);
+        }
+
+        List<ScholarshipRequirement> requirements =
+                requirementRepository.findByScholarshipId(scholarshipId);
+
+        GapAnalysisResponse response = gapAnalysis.analyze(
+                profile, scholarship, requirements);
+
+        Long analysisId = gapAnalysisRunRepository.saveRun(
+                studentId,
+                scholarshipId,
+                response.isEligible(),
+                response.getUnmetCount(),
+                response.getUnknownCount());
+
+        gapAnalysisResultRepository.saveResults(
+                analysisId,
+                response.getRequirements());
+
+        return response;
     }
-
-    List<ScholarshipRequirement> requirements =
-            requirementRepository.findByScholarshipId(scholarshipId);
-
-    // 1. Run your existing algorithm
-    GapAnalysisResponse response = gapAnalysis.analyze(
-            profile, scholarship, requirements);
-
-    // 2. Save the overall analysis and obtain its generated ID
-    Long analysisId = gapAnalysisRunRepository.saveRun(
-            studentId,
-            scholarshipId,
-            response.isEligible(),
-            response.getUnmetCount(),
-            response.getUnknownCount()
-    );
-
-    // 3. Save all individual requirement results
-    gapAnalysisResultRepository.saveResults(
-            analysisId,
-            response.getRequirements()
-    );
-
-    // 4. Return the same response to the frontend
-    return response;
-}
-
 }

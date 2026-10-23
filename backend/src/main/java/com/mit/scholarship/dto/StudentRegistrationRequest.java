@@ -1,8 +1,9 @@
 package com.mit.scholarship.dto;
 
-import com.mit.scholarship.model.Student;
 import java.math.BigDecimal;
 import java.util.List;
+
+import com.mit.scholarship.model.Student;
 
 public class StudentRegistrationRequest {
 
@@ -65,6 +66,15 @@ public class StudentRegistrationRequest {
         private String admissionMode;
         private Boolean isBeediCineWorkerDependent;
         private Boolean isCapfAssamRiflesDependent;
+        private Boolean hasOtherScholarship;
+
+        public Boolean getHasOtherScholarship() {
+            return hasOtherScholarship;
+        }
+
+        public void setHasOtherScholarship(Boolean hasOtherScholarship) {
+            this.hasOtherScholarship = hasOtherScholarship;
+        }
 
         public BackgroundDetails() {}
 
