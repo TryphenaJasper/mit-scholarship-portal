@@ -320,8 +320,10 @@ body {
 ========================= */
 
 .radio-group {
-    margin-top: 0;
+    margin-top: 10px;
+    margin-bottom: 14px;
     min-width: 0;
+    row-gap: 8px;
 }
 
 .radio-grid {
@@ -610,4 +612,17 @@ body {
 .profile-dropdown button:hover {
     background: var(--pink-soft);
     color: var(--burgundy);
+}
+.arrear-count-group[hidden] {
+    display: none !important;
+}
+.arrear-count-group small {
+    display: block;
+    margin-top: 6px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: inherit;
+    opacity: 0.75;
 }

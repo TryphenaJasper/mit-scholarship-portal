@@ -184,6 +184,39 @@
                         >
                     </div>
 
+                    <div class="form-group">
+                        <label for="class10InstitutionType">Class 10 Institution Type</label>
+                        <select id="class10InstitutionType" required>
+                        <option value="">Select institution type</option>
+                        <option value="PRIVATE">Private</option>
+                        <option value="GOVERNMENT">Government</option>
+                        <option value="AIDED">Aided</option>
+                    </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="class12InstitutionType">Class 12 Institution Type</label>
+                        <select id="class12InstitutionType" required>
+                        <option value="">Select institution type</option>
+                        <option value="PRIVATE">Private</option>
+                        <option value="GOVERNMENT">Government</option>
+                        <option value="AIDED">Aided</option>
+                    </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="class12CompletionYear">Class 12 Completion Year</label>
+                        <input
+                            type="number"
+                            id="class12CompletionYear"
+                            min="2000"
+                            max="2100"
+                            step="1"
+                            placeholder="e.g. 2025"
+                            required
+                        >
+                    </div>
+
 
                     <div class="form-group">
                         <label for="cgpa">
@@ -217,6 +250,34 @@
                     </div>
 
                 </div>
+                
+                <div class="radio-group">
+                        <label>Did you study in a government school from Classes 6–12?</label>
+                        <div class="radio-options">
+                            <label>
+                                <input type="radio" name="governmentSchool6To12" value="yes" required>
+                                Yes
+                            </label>
+                            <label>
+                                <input type="radio" name="governmentSchool6To12" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="radio-group">
+                        <label>Did you study in a government school from Classes 10–12?</label>
+                        <div class="radio-options">
+                            <label>
+                                <input type="radio" name="governmentSchool10To12" value="yes" required>
+                                Yes
+                            </label>
+                            <label>
+                                <input type="radio" name="governmentSchool10To12" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
 
 
                 <div class="radio-group">
@@ -249,6 +310,19 @@
                     </div>
 
                 </div>
+                
+                <div class="form-group arrear-count-group" id="arrearCountGroup" hidden>
+                    <label for="arrearCount">Number of Standing Arrears</label>
+                    <input
+                        type="number"
+                        id="arrearCount"
+                        min="1"
+                        step="1"
+                        placeholder="Enter arrear count"
+                    >
+                    <small>Enter the total number of current standing arrears.</small>
+                </div>
+
 
             </section>
 
@@ -356,34 +430,6 @@
                             </label>
                             <label>
                                 <input type="radio" name="singleParent" value="no">
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="radio-group">
-                        <label>Did you study in a government school from Classes 6–12?</label>
-                        <div class="radio-options">
-                            <label>
-                                <input type="radio" name="governmentSchool6To12" value="yes" required>
-                                Yes
-                            </label>
-                            <label>
-                                <input type="radio" name="governmentSchool6To12" value="no">
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="radio-group">
-                        <label>Did you study in a government school from Classes 10–12?</label>
-                        <div class="radio-options">
-                            <label>
-                                <input type="radio" name="governmentSchool10To12" value="yes" required>
-                                Yes
-                            </label>
-                            <label>
-                                <input type="radio" name="governmentSchool10To12" value="no">
                                 No
                             </label>
                         </div>

@@ -11,13 +11,34 @@ function showStatus(message, isError = false) {
     statusMessage.style.color = isError ? "#c62828" : "#397447";
 }
 
+
 function formatLabel(key) {
+    const customLabels = {
+        class10InstitutionType: "Class 10 Institution Type",
+        class12InstitutionType: "Class 12 Institution Type",
+        studiedGovClass6To12: "Studied in Government School (Classes 6–12)",
+        studiedGovClass10To12: "Studied in Government School (Classes 10–12)",
+        class10Percentage: "Class 10 Percentage",
+        class12Percentage: "Class 12 Percentage",
+        class12CompletionYear: "Class 12 Completion Year",
+        academicYear: "Academic Year",
+        standingArrears: "Standing Arrears",
+        arrearCount: "Arrear Count"
+    };
+
+    if (customLabels[key]) {
+        return customLabels[key];
+    }
+
     return key
         .replace(/([a-z])([A-Z])/g, "$1 $2")
-        .replace(/^is /, "")
-        .replace(/^has /, "")
+        .replace(/([A-Za-z])(\d)/g, "$1 $2")
+        .replace(/(\d)([A-Za-z])/g, "$1 $2")
+        .replace(/^is /i, "")
+        .replace(/^has /i, "")
         .replace(/\b\w/g, letter => letter.toUpperCase());
 }
+
 
 function formatValue(value) {
     if (value === null || value === undefined || value === "") {

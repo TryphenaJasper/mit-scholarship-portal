@@ -430,6 +430,7 @@ body {
 }
 
 
+
 /* =========================
    GAP ANALYSIS
 ========================= */
@@ -442,7 +443,7 @@ body {
     margin-bottom: 21px;
     background: var(--pink-soft);
     border: 1px solid #F3D0D9;
-    border-radius: 7px;
+    border-radius: 8px;
 }
 
 .gap-icon {
@@ -461,27 +462,35 @@ body {
 
 .gap-intro h3 {
     color: var(--burgundy);
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 700;
 }
 
 .gap-intro p {
-    margin-top: 4px;
+    margin-top: 5px;
     color: var(--muted);
-    font-size: 11px;
-    line-height: 1.6;
+    font-size: 12px;
+    line-height: 1.7;
 }
 
 .gap-list {
     display: flex;
     flex-direction: column;
-    gap: 13px;
+    gap: 15px;
 }
 
 .gap-card {
-    background: white;
+    padding: 24px;
+    background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 21px;
+    border-radius: 9px;
+    box-shadow: 0 2px 8px rgba(100, 17, 27, 0.035);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gap-card:hover {
+    border-color: #D9A6B2;
+    box-shadow: 0 5px 15px rgba(100, 17, 27, 0.065);
 }
 
 .gap-card-header {
@@ -491,62 +500,104 @@ body {
     gap: 20px;
 }
 
+.gap-card-header > div:first-child {
+    min-width: 0;
+}
+
 .gap-card h3 {
     color: var(--burgundy);
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
 }
 
 .gap-card-subtitle {
-    margin-top: 5px;
+    margin-top: 6px;
     color: var(--muted);
-    font-size: 11px;
+    font-size: 12px;
+    line-height: 1.6;
 }
 
 .gap-scholarship-money {
     color: var(--pink);
     font-size: 13px;
     font-weight: 700;
+    line-height: 1.6;
+    text-align: right;
     white-space: nowrap;
 }
 
 .gap-requirements {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 11px;
-    margin-top: 17px;
-    padding-top: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+    padding-top: 19px;
     border-top: 1px solid #F1E1E5;
 }
 
 .gap-item {
-    padding: 11px 13px;
+    min-width: 0;
+    padding: 16px;
     background: #FFFAFB;
-    border: 1px solid #F5E6E9;
-    border-radius: 5px;
+    border: 1px solid #F0DCE1;
+    border-radius: 7px;
+    text-align: left;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.gap-item:hover {
+    background: #FFF5F7;
+    border-color: #E8C4CD;
 }
 
 .gap-item-label {
     display: block;
-    margin-bottom: 4px;
-    color: var(--muted-light);
-    font-size: 9px;
+    margin-bottom: 10px;
+    color: var(--burgundy);
+    font-size: 11px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.3px;
+    text-transform: capitalize;
+    overflow-wrap: anywhere;
 }
 
 .gap-item-value {
+    margin-top: 5px;
     color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.gap-item .gap-card-subtitle {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.gap-item .gap-value {
+    margin-top: 11px;
+    padding: 9px 11px;
+    background: var(--pink-soft);
+    border-left: 3px solid var(--pink);
+    border-radius: 4px;
+    color: var(--burgundy);
     font-size: 12px;
     font-weight: 600;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
 }
 
 .gap-result {
-    margin-top: 16px;
-    padding: 11px 13px;
-    border-radius: 5px;
-    font-size: 11px;
-    line-height: 1.5;
+    margin-top: 17px;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.7;
 }
 
 .gap-result.eligible {
@@ -555,14 +606,57 @@ body {
 }
 
 .gap-result.improve {
-    background: #FFF4DF;
+    background: var(--warning-bg);
     color: var(--warning);
 }
 
 .gap-result.maintain {
-    background: #FDEBF0;
+    background: var(--pink-soft);
     color: var(--burgundy);
 }
+
+/* Informational note beneath the requirement cards */
+.gap-card > .gap-income {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* Empty state and error messages */
+#gapList > .gap-card:has(> h3:only-child) {
+    padding: 22px 24px;
+}
+
+@media (max-width: 760px) {
+    .gap-card {
+        padding: 19px;
+    }
+
+    .gap-requirements {
+        grid-template-columns: 1fr;
+        gap: 11px;
+        margin-top: 16px;
+        padding-top: 15px;
+    }
+
+    .gap-item {
+        padding: 14px;
+    }
+}
+
+@media (max-width: 500px) {
+    .gap-card-header {
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    .gap-scholarship-money {
+        text-align: left;
+        white-space: normal;
+    }
+}
+
 
 
 /* =========================

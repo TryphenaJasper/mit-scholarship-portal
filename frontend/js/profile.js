@@ -60,7 +60,14 @@ profileForm.addEventListener("submit", async function (event) {
     const cgpa = toNumber(getValue("cgpa"));
     const attendance = toNumber(getValue("attendance"));
 
+    const class10InstitutionType = getValue("class10InstitutionType");
+    const class12InstitutionType = getValue("class12InstitutionType");
+    const class12CompletionYear = toNumber(
+        getValue("class12CompletionYear")
+    );
+
     const arrears = getRadioValue("arrears");
+    const arrearCount = toNumber(getValue("arrearCount"));
     const gender = getValue("gender");
     const category = getValue("category");
     const religion = getValue("community");
@@ -104,12 +111,25 @@ profileForm.addEventListener("submit", async function (event) {
         !year || !semester || !gender || !category ||
         !religion || income === null ||
         !firstGraduate || !arrears || !differentlyAbled ||
-        !singleWindow || !otherScholarship
+        !singleWindow || !otherScholarship ||
+        !class10InstitutionType ||
+        !class12InstitutionType ||
+        class12CompletionYear === null
     ) {
         showError("Please complete all required fields.");
         return;
     }
 
+    if (arrears === "yes") {
+    if (
+        arrearCount === null ||
+        !Number.isInteger(arrearCount) ||
+        arrearCount < 1
+    ) {
+        showError("Please enter a valid number of standing arrears.");
+        return;
+    }
+}
     // The selected year and semester must agree with each other.
     const validSemesters = {
         1: [1, 2],
@@ -121,6 +141,17 @@ profileForm.addEventListener("submit", async function (event) {
     if (!validSemesters[year]?.includes(semester)) {
         showError(
             "Please select a semester that matches your year of study."
+        );
+        return;
+    }
+    const currentYear = new Date().getFullYear();
+
+    if (
+        class12CompletionYear < 2000 ||
+        class12CompletionYear > currentYear
+    ) {
+        showError(
+            `Please enter a valid Class 12 completion year between 2000 and ${currentYear}.`
         );
         return;
     }
@@ -185,25 +216,20 @@ profileForm.addEventListener("submit", async function (event) {
         },
 
         education: {
-            class10InstitutionType: isGov10To12
-                ? "GOVERNMENT"
-                : "UNKNOWN",
-            class12InstitutionType: isGov10To12
-                ? "GOVERNMENT"
-                : "UNKNOWN",
+            class10InstitutionType: class10InstitutionType,
+            class12InstitutionType: class12InstitutionType,
             studiedGovClass6To12: isGov6To12,
             studiedGovClass10To12: isGov10To12,
             class10Percentage: class10,
             class12Percentage: hsc,
-            class12CompletionYear: null
+            class12CompletionYear: class12CompletionYear
         },
-
         academicRecords: [
             {
                 semester: semester,
                 cgpa: cgpa,
                 attendancePercentage: attendance,
-                arrearsCount: arrears === "yes" ? 1 : 0,
+                arrearsCount: arrears === "yes" ? arrearCount : 0,
                 conductGood: null,
                 academicYear: null
             }
@@ -268,6 +294,32 @@ profileForm.addEventListener("submit", async function (event) {
         }
     }
 });
+
+const arrearsRadios = document.querySelectorAll(
+    'input[name="arrears"]'
+);
+
+const arrearCountGroup = document.getElementById("arrearCountGroup");
+const arrearCountInput = document.getElementById("arrearCount");
+
+function toggleArrearCount() {
+    const selectedArrears = getRadioValue("arrears");
+    const showArrearCount = selectedArrears === "yes";
+
+    if (arrearCountGroup) {
+        arrearCountGroup.hidden = !showArrearCount;
+    }
+
+    if (arrearCountInput && !showArrearCount) {
+        arrearCountInput.value = "";
+    }
+}
+
+arrearsRadios.forEach((radio) => {
+    radio.addEventListener("change", toggleArrearCount);
+});
+
+toggleArrearCount();
 
 function goToDashboard() {
     window.location.href = "index.html";
