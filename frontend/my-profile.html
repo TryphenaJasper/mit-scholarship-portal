@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | ScholarWise</title>
+    <link rel="stylesheet" href="css/my-profile.css">
+</head>
+<body>
+    
+<header class="navbar">
+    <a href="index.html" class="logo">
+        <span class="logo-mark">M</span>
+        <span class="logo-text">
+            <strong>MIT Scholarships</strong>
+            <small>Anna University</small>
+        </span>
+    </a>
+
+    <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="search.html">Search Scholarships</a>
+        <a href="available.html">Available Scholarships</a>
+        <a href="help.html">Help</a>
+
+        <div class="profile-menu">
+            <button
+                type="button"
+                id="profileMenuButton"
+                class="profile-icon-button"
+                aria-label="Open profile menu"
+                aria-expanded="false"
+            >
+                <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
+                </svg>
+            </button>
+
+            <div class="profile-dropdown" id="profileDropdown" hidden>
+                <a href="profile.html">Create Profile</a>
+                <a href="my-profile.html">My Profile</a>
+                <button type="button" id="logoutButton">Logout</button>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+    <main class="page-container">
+        <h1>My Profile</h1>
+        <p class="subtitle">View the details saved in your ScholarWise account.</p>
+
+        <section class="search-card">
+            <label for="studentId">Student ID</label>
+            <div class="search-row">
+                <input type="number" id="studentId"
+                    placeholder="Enter your Student ID" min="1">
+                <button type="button" id="viewProfileButton">View Profile</button>
+            </div>
+            <p id="statusMessage" role="status"></p>
+        </section>
+
+        <div id="profileDetails" hidden>
+            <section class="profile-card">
+                <h2>Student Details</h2>
+                <div id="studentDetails" class="details-grid"></div>
+            </section>
+
+            <section class="profile-card">
+                <h2>Background Details</h2>
+                <div id="backgroundDetails" class="details-grid"></div>
+            </section>
+
+            <section class="profile-card">
+                <h2>Financial Details</h2>
+                <div id="financialDetails" class="details-grid"></div>
+            </section>
+
+            <section class="profile-card">
+                <h2>Education Details</h2>
+                <div id="educationDetails" class="details-grid"></div>
+            </section>
+
+            <section class="profile-card">
+                <h2>Academic Records</h2>
+                <div id="academicDetails"></div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/my-profile.js"></script>
+</body>
+</html>

@@ -1,35 +1,56 @@
+
 /* =========================
    PROFILE DROPDOWN
 ========================= */
 
-const profileButton =
-    document.getElementById("profileButton");
+const profileMenuButton =
+    document.getElementById("profileMenuButton");
 
 const profileDropdown =
     document.getElementById("profileDropdown");
 
+const logoutButton =
+    document.getElementById("logoutButton");
 
-profileButton.addEventListener("click", function (event) {
+if (profileMenuButton && profileDropdown) {
 
-    event.stopPropagation();
+    profileMenuButton.addEventListener("click", function (event) {
+        event.stopPropagation();
 
-    profileDropdown.classList.toggle("show");
+        const isOpening = profileDropdown.hidden;
+        profileDropdown.hidden = !isOpening;
 
-});
+        profileMenuButton.setAttribute(
+            "aria-expanded",
+            String(isOpening)
+        );
+    });
 
+    document.addEventListener("click", function (event) {
+        if (
+            !profileMenuButton.contains(event.target) &&
+            !profileDropdown.contains(event.target)
+        ) {
+            profileDropdown.hidden = true;
 
-document.addEventListener("click", function (event) {
+            profileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+    });
 
-    if (
-        !profileButton.contains(event.target) &&
-        !profileDropdown.contains(event.target)
-    ) {
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function () {
+            profileDropdown.hidden = true;
 
-        profileDropdown.classList.remove("show");
-
+            profileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        });
     }
-
-});
+}
 
 
 

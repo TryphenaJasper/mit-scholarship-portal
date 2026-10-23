@@ -151,22 +151,6 @@ function updateSummary() {
         .textContent = deadlines.length;
 }
 
-const profileButton =
-    document.getElementById("profileButton");
-
-const profileDropdown =
-    document.getElementById("profileDropdown");
-
-profileButton.addEventListener("click", function () {
-    profileDropdown.classList.toggle("show");
-});
-
-document.addEventListener("click", function(event) {
-    if (!event.target.closest(".profile-menu")) {
-        profileDropdown.classList.remove("show");
-    }
-});
-
 function initializeHomePage() {
     displayCurrentDate();
     displayActiveScholarships();
@@ -176,3 +160,40 @@ function initializeHomePage() {
 
 initializeHomePage();
 
+
+/* Profile dropdown */
+const profileMenuButton = document.getElementById("profileMenuButton");
+const profileDropdown = document.getElementById("profileDropdown");
+const logoutButton = document.getElementById("logoutButton");
+
+if (profileMenuButton && profileDropdown) {
+    profileMenuButton.addEventListener("click", () => {
+        const isOpening = profileDropdown.hidden;
+
+        profileDropdown.hidden = !isOpening;
+        profileMenuButton.setAttribute("aria-expanded", String(isOpening));
+    });
+
+    document.addEventListener("click", (event) => {
+        if (
+            !profileMenuButton.contains(event.target) &&
+            !profileDropdown.contains(event.target)
+        ) {
+            profileDropdown.hidden = true;
+            profileMenuButton.setAttribute("aria-expanded", "false");
+        }
+    });
+}
+
+/* Dummy logout: close the menu without logging out */
+if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+        if (profileDropdown) {
+            profileDropdown.hidden = true;
+        }
+
+        if (profileMenuButton) {
+            profileMenuButton.setAttribute("aria-expanded", "false");
+        }
+    });
+}

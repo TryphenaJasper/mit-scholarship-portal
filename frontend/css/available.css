@@ -209,50 +209,75 @@ body {
 }
 
 
+
 /* =========================================================
-   PROFILE DROPDOWN
+   PROFILE ICON AND DROPDOWN
    ========================================================= */
+
+.profile-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.profile-icon-button {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: white;
+    color: var(--burgundy);
+    cursor: pointer;
+}
+
+.profile-icon-button:hover {
+    background: var(--pink-soft);
+}
 
 .profile-dropdown {
     position: absolute;
-
-    top: 48px;
+    top: calc(100% + 10px);
     right: 0;
-
+    z-index: 1000;
     width: 175px;
-
+    padding: 8px;
     background: white;
-
     border: 1px solid var(--border);
-    border-radius: 7px;
-
+    border-radius: 8px;
     box-shadow: 0 10px 25px rgba(127, 29, 29, 0.15);
-
-    display: none;
-
     overflow: hidden;
 }
 
-.profile-dropdown.show {
-    display: block;
+.profile-dropdown[hidden] {
+    display: none !important;
 }
 
-.profile-dropdown a {
+.profile-dropdown a,
+.profile-dropdown button {
     display: block;
-
-    padding: 12px 15px;
-
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
     color: var(--text);
-
     text-decoration: none;
-
+    text-align: left;
+    font-family: inherit;
     font-size: 13px;
+    cursor: pointer;
 }
 
-.profile-dropdown a:hover {
+.profile-dropdown a:hover,
+.profile-dropdown button:hover {
     background: var(--pink-soft);
     color: var(--burgundy);
 }
+
 
 
 /* =========================================================
