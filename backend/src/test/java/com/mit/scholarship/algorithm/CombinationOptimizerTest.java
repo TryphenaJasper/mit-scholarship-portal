@@ -25,7 +25,6 @@ class CombinationOptimizerTest {
 
         assertEquals(10000.0,optimizer.calculateTotalBenefit(10000, "one-time", 3));
     }
-
     @Test
     void rejectsIncompatibleScholarships() {
         Map<String, String> compatibility = Map.of(
@@ -87,5 +86,23 @@ class CombinationOptimizerTest {
 
         assertEquals(List.of(2L), best);
     }
+    @Test
+void returnsEmptyCombinationWhenBenefitDataIsMissing() {
+    List<Long> eligibleIds = List.of(1L, 2L);
+
+    Map<String, String> compatibility = Map.of(
+            "1-2", "COMPATIBLE"
+    );
+
+    Map<String, Double> benefits = Map.of(
+            "1", 20000.0
+    );
+
+    List<Long> best = optimizer.optimize(
+            eligibleIds, compatibility, benefits
+    );
+
+    assertEquals(List.of(1L), best);
+}
 
 }
