@@ -149,6 +149,45 @@
             </div>
 
         </section>
+        
+        <!-- STUDENT ID LOOKUP -->
+        <section class="student-lookup">
+            <div class="lookup-content">
+                <span class="lookup-label">YOUR PERSONALIZED DASHBOARD</span>
+                <h2>Find Your Scholarship Opportunities</h2>
+                <p>
+                    Enter your MIT student ID to view your eligibility,
+                    academic gaps, and recommended scholarship combinations.
+                </p>
+
+                <form id="studentLookupForm" class="lookup-form">
+                    <div class="lookup-input-group">
+                        <label for="studentIdInput">Student ID</label>
+                        <input
+                            type="text"
+                            id="studentIdInput"
+                            placeholder="Enter your registration number"
+                            autocomplete="off"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" id="lookupButton">
+                        Fetch My Analysis
+                        <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+
+                <p id="lookupMessage" class="lookup-message"
+                role="status" aria-live="polite"></p>
+            </div>
+
+            <div class="lookup-decoration" aria-hidden="true">
+                <div class="lookup-icon">M</div>
+                <span>YOUR FUTURE, FUNDED.</span>
+            </div>
+        </section>
+
 
 
         <!-- ================================= -->

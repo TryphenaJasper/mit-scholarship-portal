@@ -292,7 +292,7 @@ function displayCurrentDate() {
 ========================================================= */
 
 
-async function displayApplicableScholarships() {
+async function displayApplicableScholarships(studentId) {
 
     const container =
         document.getElementById("applicableScholarships");
@@ -302,14 +302,6 @@ async function displayApplicableScholarships() {
     }
 
     container.innerHTML = "";
-
-    const studentId = localStorage.getItem("studentId");
-
-    if (!studentId) {
-        container.textContent =
-            "Please log in or register to view your eligible scholarships.";
-        return;
-    }
 
     try {
 
@@ -427,7 +419,7 @@ async function displayApplicableScholarships() {
 ========================================================= */
 
 
-async function displayGapAnalysis() {
+async function displayGapAnalysis(studentId) {
     const container = document.getElementById("gapList");
 
     if (!container) {
@@ -436,14 +428,6 @@ async function displayGapAnalysis() {
     }
 
     container.innerHTML = "";
-
-    const studentId = localStorage.getItem("studentId");
-
-    if (!studentId) {
-        container.textContent =
-            "Please save your student profile before viewing gap analysis.";
-        return;
-    }
 
     try {
         // Fetch scholarships the student is already eligible for.
@@ -707,7 +691,7 @@ async function displayGapAnalysis() {
 ========================================================= */
 
 
-async function displayCombinations() {
+async function displayCombinations(studentId) {
 
     const container = document.getElementById("comboList");
 
@@ -718,13 +702,7 @@ async function displayCombinations() {
     container.innerHTML = "";
 
     // Get the logged-in student's ID
-    const studentId = localStorage.getItem("studentId");
-
-    if (!studentId) {
-        container.textContent =
-            "Please log in or register first to view your optimized scholarship combination.";
-        return;
-    }
+    
 
     try {
 
@@ -1020,6 +998,56 @@ function setupProfileDropdown() {
     }
 }
 
+/* =========================================================
+   STUDENT ID LOOKUP
+========================================================= */
+
+function setupStudentLookup() {
+    const form = document.getElementById("studentLookupForm");
+    const input = document.getElementById("studentIdInput");
+    const button = document.getElementById("lookupButton");
+    const message = document.getElementById("lookupMessage");
+
+    if (!form || !input || !button || !message) {
+        console.error("Student lookup form elements were not found.");
+        return;
+    }
+
+    form.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const studentId = input.value.trim();
+
+        if (!studentId) {
+            message.textContent = "Please enter your student ID.";
+            input.focus();
+            return;
+        }
+
+        button.disabled = true;
+        message.textContent = "Fetching your scholarship analysis...";
+
+        try {
+            await Promise.all([
+                displayApplicableScholarships(studentId),
+                displayGapAnalysis(studentId),
+                displayCombinations(studentId)
+            ]);
+
+            message.textContent =
+                "Analysis requests finished. Review the results below.";
+
+        } catch (error) {
+            console.error("Student analysis error:", error);
+            message.textContent =
+                "Unable to fetch your analysis. Please try again.";
+        } finally {
+            button.disabled = false;
+        }
+    });
+}
+
+
 
 
 /* =========================================================
@@ -1029,16 +1057,9 @@ function setupProfileDropdown() {
 function initializeSearchPage() {
 
     displayCurrentDate();
-
-    displayApplicableScholarships();
-
-    displayGapAnalysis();
-
-    displayCombinations();
-
     setupToggles();
-
     setupProfileDropdown();
+    setupStudentLookup();
 }
 
 

@@ -958,3 +958,181 @@ body {
         text-align: left;
     }
 }
+
+/* STUDENT ID LOOKUP */
+.student-lookup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 34px 38px;
+    margin: 28px 0 32px;
+    background: linear-gradient(120deg, #fff 0%, #f8f1f3 100%);
+    border: 1px solid #ead7dc;
+    border-radius: 18px;
+    box-shadow: 0 8px 28px rgba(74, 12, 19, 0.06);
+}
+
+.lookup-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.lookup-label {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #c91545;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.lookup-content h2 {
+    margin: 0 0 10px;
+    color: #4a0c13;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.lookup-content > p:not(.lookup-message) {
+    max-width: 600px;
+    margin: 0 0 22px;
+    color: #716268;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.lookup-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    max-width: 700px;
+}
+
+.lookup-input-group {
+    flex: 1;
+    min-width: 0;
+}
+
+.lookup-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #4a0c13;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lookup-input-group input {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 14px;
+    border: 1px solid #dfc8ce;
+    border-radius: 9px;
+    outline: none;
+    background: #fff;
+    color: #4a0c13;
+    font: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.lookup-input-group input:focus {
+    border-color: #c91545;
+    box-shadow: 0 0 0 3px rgba(201, 21, 69, 0.09);
+}
+
+.lookup-input-group input::placeholder {
+    color: #aa9aa0;
+}
+
+#lookupButton {
+    min-height: 46px;
+    padding: 0 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: none;
+    border-radius: 9px;
+    background: #64111b;
+    color: #fff;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+#lookupButton:hover {
+    background: #4a0c13;
+    transform: translateY(-1px);
+}
+
+#lookupButton:disabled {
+    opacity: 0.65;
+    cursor: wait;
+    transform: none;
+}
+
+.lookup-message {
+    min-height: 18px;
+    margin: 12px 0 0;
+    color: #64111b;
+    font-size: 13px;
+}
+
+.lookup-decoration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-width: 150px;
+    color: #8c5965;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-align: center;
+}
+
+.lookup-icon {
+    display: grid;
+    place-items: center;
+    width: 92px;
+    height: 92px;
+    border: 1px solid #e7cbd2;
+    border-radius: 50%;
+    background: #f4e5e9;
+    color: #64111b;
+    font-family: Georgia, serif;
+    font-size: 48px;
+}
+
+@media (max-width: 700px) {
+    .student-lookup {
+        padding: 24px 20px;
+    }
+
+    .lookup-decoration {
+        display: none;
+    }
+
+    .lookup-content h2 {
+        font-size: 21px;
+    }
+
+    .lookup-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .lookup-input-group {
+        width: 100%;
+    }
+
+    #lookupButton {
+        width: 100%;
+    }
+}
