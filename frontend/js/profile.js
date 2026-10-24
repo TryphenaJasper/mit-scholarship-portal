@@ -3,7 +3,9 @@ const profileForm = document.getElementById("profileForm");
 const successMessage = document.getElementById("successMessage");
 const successText = document.getElementById("successText");
 
-const API_URL = "http://localhost:8080/api/students";
+
+const API_URL = "https://mit-scholarship-portal.onrender.com/api/students";
+
 
 function getValue(id) {
     return document.getElementById(id)?.value.trim() ?? "";

@@ -1,5 +1,5 @@
 
-const API_URL = "http://localhost:8080/api/scholarships";
+const API_URL = "https://mit-scholarship-portal.onrender.com/api/scholarships";
 
 const scholarshipList = document.getElementById("scholarshipList");
 

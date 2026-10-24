@@ -306,7 +306,7 @@ async function displayApplicableScholarships(studentId) {
     try {
 
         const response = await fetch(
-            `http://localhost:8080/api/students/${studentId}/eligibility`
+            `https://mit-scholarship-portal.onrender.com/api/students/${studentId}/eligibility`
         );
 
         if (!response.ok) {
@@ -432,7 +432,7 @@ async function displayGapAnalysis(studentId) {
     try {
         // Fetch scholarships the student is already eligible for.
         const eligibleResponse = await fetch(
-            `http://localhost:8080/api/students/${studentId}/eligibility`
+            `https://mit-scholarship-portal.onrender.com/api/students/${studentId}/eligibility`
         );
 
         if (!eligibleResponse.ok) {
@@ -451,7 +451,7 @@ async function displayGapAnalysis(studentId) {
 
         // Fetch all scholarships to identify those needing gap analysis.
         const scholarshipsResponse = await fetch(
-            "http://localhost:8080/api/scholarships"
+            "https://mit-scholarship-portal.onrender.com/api/scholarships"
         );
 
         if (!scholarshipsResponse.ok) {
@@ -472,9 +472,8 @@ async function displayGapAnalysis(studentId) {
 
                 try {
                     const response = await fetch(
-                        `http://localhost:8080/api/students/${studentId}/scholarships/${scholarshipId}/gap-analysis`
+                        `https://mit-scholarship-portal.onrender.com/api/students/${studentId}/scholarships/${scholarshipId}/gap-analysis`
                     );
-
                     if (!response.ok) {
                         console.warn(
                             `Gap analysis failed for scholarship ${scholarshipId}`
@@ -708,7 +707,7 @@ async function displayCombinations(studentId) {
 
         // Fetch the real optimization result from the backend
         const response = await fetch(
-            `http://localhost:8080/api/scholarships/optimize/${studentId}`
+            `https://mit-scholarship-portal.onrender.com/api/scholarships/optimize/${studentId}`
         );
 
         if (!response.ok) {

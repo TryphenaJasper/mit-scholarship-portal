@@ -1,5 +1,6 @@
 
-const API_URL = "http://localhost:8080/api/students";
+const API_URL = "https://mit-scholarship-portal.onrender.com/api/students";
+
 
 const studentIdInput = document.getElementById("studentId");
 const viewProfileButton = document.getElementById("viewProfileButton");
